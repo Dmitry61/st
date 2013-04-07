@@ -1,7 +1,7 @@
 #ifndef RING_AVG_H
 #define RING_AVG_H
 
-#define BUF_SIZE 100
+#define BUF_SIZE 50
 #define sqr(x) (x*x)
 
 typedef struct {
