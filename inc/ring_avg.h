@@ -19,7 +19,8 @@ typedef struct  {
 	int idx;
 	int consecutiveFaults;
 } FloatRingAvg;
-
+void ringInit(RingAvg *ring);
+void floatRingInit(FloatRingAvg *ring);
 void floatRingAdd(FloatRingAvg *ring, float val);
 
 #endif

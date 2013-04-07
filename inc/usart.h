@@ -12,5 +12,7 @@ void USART1_directputc(const char ch);
 void USART1_directprint(const char *str);
 void USART1_flush(void);
 char USART1_getc(void);
+void USART2_Init(void);
+void USART2_write(char *str);
 
 #endif

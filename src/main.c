@@ -29,32 +29,38 @@ int main() {
     setvbuf(stdin, NULL, _IONBF, 0);
     setvbuf(stdout, NULL, _IONBF, 0);
     setvbuf(stderr, NULL, _IONBF, 0);
-    printf("Starting code\n");
     FloatRingAvg headingRing;
     headingRing.consecutiveFaults = 0;
 
+    USART2_Init();
+
     Gyro_Init();
     Gyro_Calibrate();
-    printf("finished calibrating\r\n");
     Compass_Init();
-    printf("initialised compass\n");
 
     int angRates[3];
-    float headings;
+    float heading;
     float headingAvg;
     RingAvg angAvg[3] = {};
     float gyroAvg[3] = {};
     
+    char debugBuffer[100];
+
+   ringInit(&angAvg[0]);
+   ringInit(&angAvg[1]);
+   ringInit(&angAvg[2]);
+   floatRingInit(&headingRing);
     while(1) {
         for(int k = 0; k < 10; ++k) {
             /* Read Gyro Angular data */
             Gyro_ReadAngRate(angRates);
-            headings = Compass_GetHeading();
-
+            heading = Compass_GetHeading();
             for(int i=0; i<3; ++i) {
                 gyroAvg[i] = Gyro_AddAvgAngRate(&angAvg[i], angRates[i]);
             }
-            headingAvg = Compass_AddAvgHeading(&headingRing, headings);
+            headingAvg = Compass_AddAvgHeading(&headingRing, heading);
+            //sprintf(debugBuffer, "heading %9.3f, average %9.3f\r\n", heading, headingAvg);
+            //USART2_write(debugBuffer);
         }
         printf("c%9.3f\n", headingAvg);
         printf("g%9.3f\n", gyroAvg[2]);
