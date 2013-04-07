@@ -7,5 +7,6 @@ void ringAdd(RingAvg *ring, int val) {
     ring->data[ring->idx] = val;
     ring->sum += ring->data[ring->idx];
     ++ring->idx;
-    ring->idx %= BUF_SIZE;
+    if(ring->idx == BUF_SIZE)
+    	ring->idx = 0;
 }

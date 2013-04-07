@@ -7,6 +7,7 @@
 #define L3G_Sensitivity_500dps     (float)    57.1429f        /*!< gyroscope sensitivity with 500 dps full scale [LSB/dps] */
 #define L3G_Sensitivity_2000dps    (float)    14.285f	      /*!< gyroscope sensitivity with 2000 dps full scale [LSB/dps] */
 
+static int Gyro_offset[3];
 
 void Gyro_Init(void)
 {
@@ -15,7 +16,7 @@ void Gyro_Init(void)
   
   /* Configure Mems L3GD20 */
   L3GD20_InitStructure.Power_Mode = L3GD20_MODE_ACTIVE;
-  L3GD20_InitStructure.Output_DataRate = L3GD20_OUTPUT_DATARATE_1;
+  L3GD20_InitStructure.Output_DataRate = L3GD20_OUTPUT_DATARATE_4;
   L3GD20_InitStructure.Axes_Enable = L3GD20_AXES_ENABLE;
   L3GD20_InitStructure.Band_Width = L3GD20_BANDWIDTH_4;
   L3GD20_InitStructure.BlockData_Update = L3GD20_BlockDataUpdate_Continous;
@@ -35,61 +36,58 @@ void Gyro_Init(void)
   * @param  pfData : Data out pointer
   * @retval None
   */
-void Gyro_ReadAngRate (int* pfData)
-{
+static void Gyro_readRaw(int *pfData) {
   uint8_t tmpbuffer[6] ={0};
   int16_t RawData[3] = {0};
-  uint8_t tmpreg = 0;
   int i = 0;
 
-  L3GD20_Read(&tmpreg,L3GD20_CTRL_REG4_ADDR,1);
+  uint8_t STATG = 0;
+  // waits until new data is avialable
+  while(!(STATG & 0x08)) {
+    L3GD20_Read(&STATG,L3GD20_STATUS_REG_ADDR,1);
+  }
   
   L3GD20_Read(tmpbuffer,L3GD20_OUT_X_L_ADDR,6);
   
-  /* check in the control register 4 the data alignment (Big Endian or Little Endian)*/
-  if(!(tmpreg & 0x40))
-  {
-    for(i=0; i<3; i++)
-      RawData[i]=(int16_t)(((uint16_t)tmpbuffer[2*i+1] << 8) + tmpbuffer[2*i]);
-  }
-  else
-  {
-    for(i=0; i<3; i++)
-      RawData[i]=(int16_t)(((uint16_t)tmpbuffer[2*i] << 8) + tmpbuffer[2*i+1]);
-  }
+  
+  for(i=0; i<3; i++)
+    RawData[i]=(int16_t)(((uint16_t)tmpbuffer[2*i+1] << 8) + tmpbuffer[2*i]);
 
   for(i=0; i<3; i++)
   {
     pfData[i]=RawData[i];
-    //printf("%d => %d\n", i, ((double) RawData[i]));
   }
+}
+void Gyro_ReadAngRate (int* pfData)
+{
+  Gyro_readRaw(pfData);
+  pfData[0] -= Gyro_offset[0];
+  pfData[1] -= Gyro_offset[1];
+  pfData[2] -= Gyro_offset[2];
 }
 
 float Gyro_AvgAngRate(RingAvg *ring) {
   float sensitivity = 0;
-  uint8_t tmpreg = 0;
+  sensitivity=L3G_Sensitivity_500dps;
 
-  L3GD20_Read(&tmpreg,L3GD20_CTRL_REG4_ADDR,1);
-
-  switch(tmpreg & 0x30)
-    {
-    case 0x00:
-      sensitivity=L3G_Sensitivity_250dps;
-      break;
-      
-    case 0x10:
-      sensitivity=L3G_Sensitivity_500dps;
-      break;
-      
-    case 0x20:
-      sensitivity=L3G_Sensitivity_2000dps;
-      break;
-    }
-
-  return ring->sum / (float)(BUF_SIZE * sensitivity);
+  return (float)ring->sum / ((float)BUF_SIZE * sensitivity);
 }
 
 float Gyro_AddAvgAngRate(RingAvg *ring, int val) {
   ringAdd(ring, val);
   return Gyro_AvgAngRate(ring);
+}
+
+void Gyro_Calibrate() {
+  int gyro[3];
+
+  for(int i = 0; i<128; ++i) {
+    Gyro_readRaw(gyro);
+    Gyro_offset[0] += gyro[0];
+    Gyro_offset[1] += gyro[1];
+    Gyro_offset[2] += gyro[2];
+  }
+  Gyro_offset[0] /= 128;
+  Gyro_offset[1] /= 128;
+  Gyro_offset[2] /= 128;
 }

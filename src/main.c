@@ -16,6 +16,8 @@ __IO uint8_t DataReady = 0;
 __IO uint32_t UserButtonPressed = 0;
 __IO uint8_t PrevXferComplete = 1;
 
+
+
 int main() {
     RCC_GetClocksFreq(&RCC_Clocks);
     SysTick_Config(RCC_Clocks.HCLK_Frequency / 100);
@@ -29,23 +31,24 @@ int main() {
     setvbuf(stdin, NULL, _IONBF, 0);
     setvbuf(stdout, NULL, _IONBF, 0);
     setvbuf(stderr, NULL, _IONBF, 0);
+    printf("Starting code\n");
     RingAvg accAvg[3] = {}, magAvg[3] = {};
     Gyro_Init();
+    Gyro_Calibrate();
     Compass_Init();
 
-    int angRate[3];
+    int angRates[3];
     RingAvg angAvg[3] = {};
-    float angInfo[3] = {};
+    float gyroAvg[3] = {};
     
     while(1) { 
         /* Read Gyro Angular data */
-        Gyro_ReadAngRate(angRate);
+        Gyro_ReadAngRate(angRates);
         for(int i=0; i<3; ++i) {
-            angInfo[i] = Gyro_AddAvgAngRate(&angAvg[i], angRate[i]);
+            gyroAvg[i] = Gyro_AddAvgAngRate(&angAvg[i], angRates[i]);
         }
-
-        printf("g, % 9.3f, % 9.3f, % 9.3f, ", angInfo[0], angInfo[1], angInfo[2]);
-        printf("c: % 9.3f\r\n", Compass_GetHeading(accAvg, magAvg));
+        printf("c%9.3f\n", Compass_GetHeading(accAvg, magAvg));
+        printf("g%9.3f\n", gyroAvg[2]);
     }
     
     while(1);

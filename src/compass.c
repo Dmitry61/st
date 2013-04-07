@@ -54,6 +54,12 @@ void Compass_ReadAcc(int* pfData)
   uint8_t buffer[6], cDivider;
   uint8_t i = 0;
   
+  uint8_t STATA = 0;
+  // waits until new data is avialable
+  while(!(STATA & 0x08)) {
+    LSM303DLHC_Read(ACC_I2C_ADDRESS, LSM303DLHC_STATUS_REG_A, &STATA, 1);
+  }
+
   /* Read the register content */
   LSM303DLHC_Read(ACC_I2C_ADDRESS, LSM303DLHC_CTRL_REG4_A, ctrlx,2);
   LSM303DLHC_Read(ACC_I2C_ADDRESS, LSM303DLHC_OUT_X_L_A, buffer, 6);
@@ -96,9 +102,13 @@ for(i=0; i<3; i++)
   void Compass_ReadMag(int* pfData)
   {
       static uint8_t buffer[6] = {0};
-      uint8_t CTRLB = 0;
+      uint8_t STATM = 0;
       uint8_t i =0;
-      LSM303DLHC_Read(MAG_I2C_ADDRESS, LSM303DLHC_CRB_REG_M, &CTRLB, 1);
+
+      // waits until new data is avialable
+      while(!(STATM & 0x01)) {
+        LSM303DLHC_Read(MAG_I2C_ADDRESS, LSM303DLHC_SR_REG_M, &STATM, 1);
+      }
 
       LSM303DLHC_Read(MAG_I2C_ADDRESS, LSM303DLHC_OUT_X_H_M, buffer, 1);
       LSM303DLHC_Read(MAG_I2C_ADDRESS, LSM303DLHC_OUT_X_L_M, buffer+1, 1);
@@ -273,6 +283,6 @@ float Compass_GetHeading(RingAvg accAvg[], RingAvg magAvg[]) {
 
     fTiltedX = magInfo[0]*fCosPitch+magInfo[2]*fSinPitch;
     fTiltedY = magInfo[0]*fSinRoll*fSinPitch+magInfo[1]*fCosRoll-magInfo[1]*fSinRoll*fCosPitch;
-
-    return atan2f((float)fTiltedY,(float)fTiltedX)*180/PI;
+    float heading = atan2f((float)fTiltedY,(float)fTiltedX)*180/PI;
+    return heading;
 }
