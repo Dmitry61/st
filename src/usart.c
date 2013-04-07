@@ -101,6 +101,7 @@ void USART1_flush(void) {
 }
 
 char USART1_getc(void) {
+    while(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET);
     return (char)USART_ReceiveData(USART1);
 }
 
