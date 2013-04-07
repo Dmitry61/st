@@ -8,8 +8,18 @@ typedef struct {
     int data[BUF_SIZE];
     int sum;
     int idx;
+    int consecutiveFaults;
 } RingAvg;
 
 void ringAdd(RingAvg *ring, int val);
+
+typedef struct  {
+	float data[BUF_SIZE];
+	float sum;
+	int idx;
+	int consecutiveFaults;
+} FloatRingAvg;
+
+void floatRingAdd(FloatRingAvg *ring, float val);
 
 #endif

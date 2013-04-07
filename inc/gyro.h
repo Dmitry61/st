@@ -7,5 +7,6 @@ void Gyro_Init(void);
 void Gyro_ReadAngRate(int* pfData);
 float Gyro_AvgAngRate(RingAvg *ring);
 float Gyro_AddAvgAngRate(RingAvg *rate, int value);
+void Gyro_Calibrate();
 
 #endif

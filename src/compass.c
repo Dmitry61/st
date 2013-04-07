@@ -13,14 +13,14 @@ void Compass_Init(void)
   LSM303DLHCMag_InitTypeDef LSM303DLHC_InitStructure;
   LSM303DLHCAcc_InitTypeDef LSM303DLHCAcc_InitStructure;
   LSM303DLHCAcc_FilterConfigTypeDef LSM303DLHCFilter_InitStructure;
-  
+
   /* Configure MEMS magnetometer main parameters: temp, working mode, full Scale and Data rate */
   LSM303DLHC_InitStructure.Temperature_Sensor = LSM303DLHC_TEMPSENSOR_DISABLE;
   LSM303DLHC_InitStructure.MagOutput_DataRate = LSM303DLHC_ODR_220_HZ;
   LSM303DLHC_InitStructure.MagFull_Scale = LSM303DLHC_FS_8_1_GA;
   LSM303DLHC_InitStructure.Working_Mode = LSM303DLHC_CONTINUOS_CONVERSION;
   LSM303DLHC_MagInit(&LSM303DLHC_InitStructure);
-  
+
    /* Fill the accelerometer structure */
   LSM303DLHCAcc_InitStructure.Power_Mode = LSM303DLHC_NORMAL_MODE;
   LSM303DLHCAcc_InitStructure.AccOutput_DataRate = LSM303DLHC_ODR_1344_HZ;
@@ -29,6 +29,7 @@ void Compass_Init(void)
   LSM303DLHCAcc_InitStructure.BlockData_Update = LSM303DLHC_BlockUpdate_Continous;
   LSM303DLHCAcc_InitStructure.Endianness=LSM303DLHC_BLE_LSB;
   LSM303DLHCAcc_InitStructure.High_Resolution=LSM303DLHC_HR_ENABLE;
+  
   /* Configure the accelerometer main parameters */
   LSM303DLHC_AccInit(&LSM303DLHCAcc_InitStructure);
   
@@ -213,37 +214,30 @@ float Compass_AddAvgMag(RingAvg *ring, enum MAG mag, int val) {
   return Compass_AvgMag(ring, mag);
 }
 
-float Compass_GetHeading(RingAvg accAvg[], RingAvg magAvg[]) {
+float Compass_GetHeading() {
     float fNormAcc,fSinRoll,fCosRoll,fSinPitch,fCosPitch, RollAng, PitchAng;
     float fTiltedX,fTiltedY;
 
     int acc[3];
     int mag[3];
 
-    float magInfo[3] = {}, accInfo[3] = {};
-
     Compass_ReadAcc(acc);
     Compass_ReadMag(mag);
+    mag[0] /= LSM303DLHC_M_SENSITIVITY_XY_8_1Ga;
+    mag[1] /= LSM303DLHC_M_SENSITIVITY_XY_8_1Ga;
+    mag[2] /= LSM303DLHC_M_SENSITIVITY_Z_8_1Ga;
 
-    for(int i=0; i<3; ++i) {
-        accInfo[i] = Compass_AddAvgAcc(&accAvg[i], acc[i]);
-        if(i <= 1) {
-            enum MAG mag_dir = XY;
-            magInfo[i] = Compass_AddAvgMag(&magAvg[i], mag_dir, mag[i]);
-        }
-        else {
-            enum MAG mag_dir = Z;
-            magInfo[i] = Compass_AddAvgMag(&magAvg[i], mag_dir, mag[i]);
-        }
-    }
+    acc[0] /= LSM_Acc_Sensitivity_2g;
+    acc[1] /= LSM_Acc_Sensitivity_2g;
+    acc[2] /= LSM_Acc_Sensitivity_2g;
 
     for(int i=0;i<3;i++)
-        accInfo[i] /= 100.0f;
-    fNormAcc = sqrt(sqr(accInfo[0])+sqr(accInfo[1])+sqr(accInfo[2]));
+        acc[i] /= 100.0f;
+    fNormAcc = sqrt(sqr(acc[0])+sqr(acc[1])+sqr(acc[2]));
 
-    fSinRoll = -accInfo[1]/fNormAcc;
+    fSinRoll = -acc[1]/fNormAcc;
     fCosRoll = sqrt(1.0-sqr(fSinRoll));
-    fSinPitch = accInfo[0]/fNormAcc;
+    fSinPitch = acc[0]/fNormAcc;
     fCosPitch = sqrt(1.0-sqr(fSinPitch));
     if ( fSinRoll >0) {
         if (fCosRoll>0) {
@@ -281,8 +275,17 @@ float Compass_GetHeading(RingAvg accAvg[], RingAvg magAvg[]) {
         PitchAng = PitchAng - 360;
     }
 
-    fTiltedX = magInfo[0]*fCosPitch+magInfo[2]*fSinPitch;
-    fTiltedY = magInfo[0]*fSinRoll*fSinPitch+magInfo[1]*fCosRoll-magInfo[1]*fSinRoll*fCosPitch;
+    fTiltedX = mag[0]*fCosPitch+mag[2]*fSinPitch;
+    fTiltedY = mag[0]*fSinRoll*fSinPitch+mag[1]*fCosRoll-mag[1]*fSinRoll*fCosPitch;
     float heading = atan2f((float)fTiltedY,(float)fTiltedX)*180/PI;
     return heading;
+}
+
+float Compass_AvgHeading(FloatRingAvg *ring) {
+  return ring->sum / BUF_SIZE;
+}
+
+float Compass_AddAvgHeading(FloatRingAvg *ring, float val) {
+  floatRingAdd(ring, val);
+  return Compass_AvgHeading(ring);
 }

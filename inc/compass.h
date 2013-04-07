@@ -25,5 +25,8 @@ float Compass_AvgAcc(RingAvg *ring);
 float Compass_AddAvgAcc(RingAvg *ring, int val);
 float Compass_AvgMag(RingAvg *ring, enum MAG mag);
 float Compass_AddAvgMag(RingAvg *ring, enum MAG mag, int val);
-float Compass_GetHeading(RingAvg accAvg[], RingAvg magAvg[]);
+float Compass_GetHeading();
+float Compass_AvgHeading(FloatRingAvg *ring);
+float Compass_AddAvgHeading(FloatRingAvg *ring, float val);
+
 #endif
