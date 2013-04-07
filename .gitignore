@@ -1,3 +1,4 @@
 obj
 pdf
-stm32f3.elf
+*.elf
+*.map
