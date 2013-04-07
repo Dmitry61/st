@@ -38,7 +38,6 @@ void Gyro_Init(void)
   */
 static void Gyro_readRaw(int *pfData) {
   uint8_t tmpbuffer[6] ={0};
-  int16_t RawData[3] = {0};
   int i = 0;
 
   uint8_t STATG = 0;
@@ -51,12 +50,7 @@ static void Gyro_readRaw(int *pfData) {
   
   
   for(i=0; i<3; i++)
-    RawData[i]=(int16_t)(((uint16_t)tmpbuffer[2*i+1] << 8) + tmpbuffer[2*i]);
-
-  for(i=0; i<3; i++)
-  {
-    pfData[i]=RawData[i];
-  }
+    pfData[i]=(int16_t)(((uint16_t)tmpbuffer[2*i+1] << 8) + tmpbuffer[2*i]);
 }
 void Gyro_ReadAngRate (int* pfData)
 {
