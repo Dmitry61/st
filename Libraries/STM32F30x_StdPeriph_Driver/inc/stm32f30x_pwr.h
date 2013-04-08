@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_pwr.h
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file contains all the functions prototypes for the PWR firmware 
   *          library.
   ******************************************************************************
@@ -63,7 +63,7 @@
 #define PWR_PVDLevel_4                  PWR_CR_PLS_LEV4
 #define PWR_PVDLevel_5                  PWR_CR_PLS_LEV5
 #define PWR_PVDLevel_6                  PWR_CR_PLS_LEV6
-#define PWR_PVDLevel_7                  PWR_CR_PLS_LEV7 
+#define PWR_PVDLevel_7                  PWR_CR_PLS_LEV7
 
 #define IS_PWR_PVD_LEVEL(LEVEL) (((LEVEL) == PWR_PVDLevel_0) || ((LEVEL) == PWR_PVDLevel_1)|| \
                                  ((LEVEL) == PWR_PVDLevel_2) || ((LEVEL) == PWR_PVDLevel_3)|| \

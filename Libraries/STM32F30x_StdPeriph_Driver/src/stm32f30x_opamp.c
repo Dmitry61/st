@@ -2,76 +2,76 @@
   ******************************************************************************
   * @file    stm32f30x_opamp.c
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the operational amplifiers (OPAMP1,...OPAMP4) peripheral: 
-  *           - OPAMP Configuration
-  *           - OPAMP calibration
+  *           + OPAMP Configuration
+  *           + OPAMP calibration
   *
-  *  @verbatim
-  *
-  *          ===================================================================
-  *                                 How to use this driver
-  *          ===================================================================
-  *                 
-  *          The device integrates 4 operational amplifiers OPAMP1, OPAMP2, OPAMP3 and OPAMP4:
-  *            
-  *             - The OPAMPs non inverting input can be selected among the list
-  *               shown by table below.
-  *
-  *             - The OPAMPs inverting input can be selected among the list
-  *               shown by table below.
-  *
-  *             - The OPAMPs outputs can be internally connected to the inverting
-  *               input (follower mode)
-  *
-  *             - The OPAMPs outputs can be internally connected to resistor feedback
-  *               output (Programmable Gain Amplifier mode)
-  *
-  *             - The OPAMPs outputs can be internally connected to ADC
-  *
-  *             - The OPAMPs can be calibrated to compensate the offset compensation
-  *
-  *             - Timer-controlled Mux for automatic switch of inverting and
-  *               non-inverting input
-  *
+  @verbatim
+  
+  ==============================================================================
+                        ##### OPAMP Peripheral Features #####
+  ==============================================================================
+                   
+  [..]
+      The device integrates 4 operational amplifiers OPAMP1, OPAMP2, OPAMP3 and OPAMP4:
+              
+      (+) The OPAMPs non inverting input can be selected among the list shown by
+          table below.
+  
+      (+) The OPAMPs inverting input can be selected among the list shown by
+          table below.
+  
+      (+) The OPAMPs outputs can be internally connected to the inverting input 
+          (follower mode)
+      (+) The OPAMPs outputs can be internally connected to resistor feedback
+          output (Programmable Gain Amplifier mode)
+  
+      (+) The OPAMPs outputs can be internally connected to ADC
+  
+      (+) The OPAMPs can be calibrated to compensate the offset compensation
+  
+      (+) Timer-controlled Mux for automatic switch of inverting and
+          non-inverting input
+  
   OPAMPs inverting/non-inverting inputs:
- +----------------------------------------------------------------------+     
- |                 |                | OPAMP1 | OPAMP2 | OPAMP3 | OPAMP4 |
- |-----------------|----------------|--------|--------|--------|--------|
- |                 | PGA            |  OK    |  OK    |  OK    |  OK    |
- | Inverting Input | Vout           |  OK    |  OK    |  OK    |  OK    |
- |                 | IO1            |  PC5   |  PC5   |  PB10  |  PB10  |
- |                 | IO2            |  PA3   |  PA5   |  PB2   |  PD8   |
- |-----------------|----------------|--------|--------|--------|--------|
- |                 | IO1            |  PA7   |  PD14  |  PB13  |  PD11  |
- |  Non Inverting  | IO2            |  PA5   |  PB14  |  PA5   |  PB11  |
- |    Input        | IO3            |  PA3   |  PB0   |  PA1   |  PA4   |
- |                 | IO4            |  PA1   |  PA7   |  PB0   |  PB13  |
- +----------------------------------------------------------------------+  
-  *          ===================================================================
-  *                      How to configure the operational amplifier
-  *          ===================================================================
-  *          This driver provides functions to configure and program the OPAMP 
-  *          of all STM32F30x devices.
-  *
-  *          To use the OPAMP, perform the following steps:
-  *
-  *          1- Enable the SYSCFG APB clock to get write access to OPAMP
-  *             register using RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
-  *
-  *          2- Configure the OPAMP input in analog mode using GPIO_Init()
-  *
-  *          4- Configure the OPAMP using OPAMP_Init() function:
-  *                 - Select the inverting input
-  *                 - Select the non-inverting inverting input
-  *  
-  *          5- Enable the OPAMP using OPAMP_Cmd() function
-  *
-  *  
-  *  @endverbatim
-  *    
+    +--------------------------------------------------------------+     
+    |                 |        | OPAMP1 | OPAMP2 | OPAMP3 | OPAMP4 |
+    |-----------------|--------|--------|--------|--------|--------|
+    |                 | PGA    |  OK    |  OK    |  OK    |  OK    |
+    | Inverting Input | Vout   |  OK    |  OK    |  OK    |  OK    |
+    |                 | IO1    |  PC5   |  PC5   |  PB10  |  PB10  |
+    |                 | IO2    |  PA3   |  PA5   |  PB2   |  PD8   |
+    |-----------------|--------|--------|--------|--------|--------|
+    |                 | IO1    |  PA7   |  PD14  |  PB13  |  PD11  |
+    |  Non Inverting  | IO2    |  PA5   |  PB14  |  PA5   |  PB11  |
+    |    Input        | IO3    |  PA3   |  PB0   |  PA1   |  PA4   |
+    |                 | IO4    |  PA1   |  PA7   |  PB0   |  PB13  |
+    +--------------------------------------------------------------+  
+  
+                        ##### How to use this driver #####
+  ==============================================================================
+  [..]
+  This driver provides functions to configure and program the OPAMP 
+  of all STM32F30x devices.
+  
+  To use the OPAMP, perform the following steps:
+ 
+  (#) Enable the SYSCFG APB clock to get write access to OPAMP
+      register using RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
+  
+  (#) Configure the OPAMP input in analog mode using GPIO_Init()
+  
+  (#) Configure the OPAMP using OPAMP_Init() function:
+      (++) Select the inverting input
+      (++) Select the non-inverting inverting input
+    
+  (#) Enable the OPAMP using OPAMP_Cmd() function
+    
+  @endverbatim
+      
   ******************************************************************************
   * @attention
   *
@@ -124,7 +124,7 @@
  *
 @verbatim   
  ===============================================================================
-                        Initialization and Configuration functions
+             ##### Initialization and Configuration functions #####
  ===============================================================================  
 
 @endverbatim
@@ -536,14 +536,14 @@ void OPAMP_StartCalibration(uint32_t OPAMP_Selection, FunctionalState NewState)
   * @}
   */
 
-/** @defgroup OPAMP_Group3 OPAMP configuration locking function
+/** @defgroup OPAMP_Group2 OPAMP configuration locking function
  *  @brief   OPAMP1,...OPAMP4 configuration locking function
  *           OPAMP1,...OPAMP4 configuration can be locked each separately.
  *           Unlocking is performed by system reset.
  *
 @verbatim   
  ===============================================================================
-                              Configuration Lock function
+                     ##### Configuration Lock function #####
  ===============================================================================  
 
 @endverbatim

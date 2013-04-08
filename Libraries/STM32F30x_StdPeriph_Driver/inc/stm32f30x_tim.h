@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_tim.h
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file contains all the functions prototypes for the TIM firmware 
   *          library.
   ******************************************************************************
@@ -232,8 +232,10 @@ typedef struct
                                      ((PERIPH) == TIM7) || \
                                      ((PERIPH) == TIM8) || \
                                      ((PERIPH) == TIM15))
-/* LIST8: TIM6 (option register) */                               
-#define IS_TIM_LIST8_PERIPH(PERIPH) (((PERIPH) == TIM6))
+/* LIST8: TIM16 (option register) */                               
+#define IS_TIM_LIST8_PERIPH(PERIPH) (((PERIPH) == TIM16)||  \
+                                     ((PERIPH) == TIM1)||\
+                                     ((PERIPH) == TIM8))
 
 /** @defgroup TIM_Output_Compare_and_PWM_modes 
   * @{
@@ -1044,16 +1046,41 @@ typedef struct
 /** @defgroup TIM_Remap 
   * @{
   */
+#define TIM16_GPIO                      ((uint16_t)0x0000)
+#define TIM16_RTC_CLK                   ((uint16_t)0x0001)
+#define TIM16_HSEDiv32                  ((uint16_t)0x0002)
+#define TIM16_MCO                       ((uint16_t)0x0003)
 
-#define TIM16_GPIO                          ((uint16_t)0x0000)
-#define TIM16_LSI                           ((uint16_t)0x0001)
-#define TIM16_LSE                           ((uint16_t)0x0002)
-#define TIM16_HSEDiv32                      ((uint16_t)0x0003)
+#define TIM1_ADC1_AWDG1                ((uint16_t)0x0001)
+#define TIM1_ADC1_AWDG2                ((uint16_t)0x0002)
+#define TIM1_ADC1_AWDG3                ((uint16_t)0x0003)
+#define TIM1_ADC4_AWDG1                ((uint16_t)0x0004)
+#define TIM1_ADC4_AWDG2                ((uint16_t)0x0008)
+#define TIM1_ADC4_AWDG3                ((uint16_t)0x000C)
 
-#define IS_TIM_REMAP(TIM_REMAP)	 (((TIM_REMAP) == TIM16_GPIO) || \
-                                  ((TIM_REMAP) == TIM16_LSI) || \
-                                  ((TIM_REMAP) == TIM16_LSE) || \
-                                  ((TIM_REMAP) == TIM16_HSEDiv32))
+#define TIM8_ADC2_AWDG1                ((uint16_t)0x0001)
+#define TIM8_ADC2_AWDG2                ((uint16_t)0x0002)
+#define TIM8_ADC2_AWDG3                ((uint16_t)0x0003)
+#define TIM8_ADC3_AWDG1                ((uint16_t)0x0004)
+#define TIM8_ADC3_AWDG2                ((uint16_t)0x0008)
+#define TIM8_ADC3_AWDG3                ((uint16_t)0x000C)
+
+#define IS_TIM_REMAP(TIM_REMAP)  (((TIM_REMAP) == TIM16_GPIO)|| \
+                                  ((TIM_REMAP) == TIM16_RTC_CLK) || \
+                                  ((TIM_REMAP) == TIM16_HSEDiv32) || \
+                                  ((TIM_REMAP) == TIM16_MCO) ||\
+                                  ((TIM_REMAP) == TIM1_ADC1_AWDG1) ||\
+                                  ((TIM_REMAP) == TIM1_ADC1_AWDG2) ||\
+                                  ((TIM_REMAP) == TIM1_ADC1_AWDG3) ||\
+                                  ((TIM_REMAP) == TIM1_ADC4_AWDG1) ||\
+                                  ((TIM_REMAP) == TIM1_ADC4_AWDG2) ||\
+                                  ((TIM_REMAP) == TIM1_ADC4_AWDG3) ||\
+                                  ((TIM_REMAP) == TIM8_ADC2_AWDG1) ||\
+                                  ((TIM_REMAP) == TIM8_ADC2_AWDG2) ||\
+                                  ((TIM_REMAP) == TIM8_ADC2_AWDG3) ||\
+                                  ((TIM_REMAP) == TIM8_ADC3_AWDG1) ||\
+                                  ((TIM_REMAP) == TIM8_ADC3_AWDG2) ||\
+                                  ((TIM_REMAP) == TIM8_ADC3_AWDG3))                                  
 
 /**
   * @}

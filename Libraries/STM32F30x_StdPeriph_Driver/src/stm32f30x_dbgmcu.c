@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_dbgmcu.c
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the Debug MCU (DBGMCU) peripheral:
   *           + Device and Revision ID management
@@ -206,4 +206,8 @@ void DBGMCU_APB2PeriphConfig(uint32_t DBGMCU_Periph, FunctionalState NewState)
   * @}
   */ 
 
+/**
+  * @}
+  */ 
+  
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

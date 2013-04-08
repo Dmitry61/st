@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_dma.c
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the Direct Memory Access controller (DMA):
   *           + Initialization and Configuration
@@ -125,7 +125,7 @@
          direction, buffer size, circular/normal mode selection, memory-to-memory 
          mode selection and channel priority value.
     [..] The DMA_Init() function follows the DMA configuration procedures as described 
-         in reference manual (RM00xx).
+         in reference manual (RM00316).
 
 @endverbatim
   * @{
@@ -359,7 +359,8 @@ void DMA_Cmd(DMA_Channel_TypeDef* DMAy_Channelx, FunctionalState NewState)
          only when the DMA channel is disabled (ie. after transfer complete event).
     [..] The following function can be used to write the Channel data counter value:
          (+) void DMA_SetCurrDataCounter(DMA_Channel_TypeDef* DMAy_Channelx, uint16_t DataNumber).
-    -@- It is advised to use this function rather than DMA_Init() in situations 
+    [..]
+    (@) It is advised to use this function rather than DMA_Init() in situations 
         where only the Data buffer needs to be reloaded.
     [..] The DMA data counter can be read to indicate the number of remaining transfers 
          for the relative DMA channel. This counter is decremented at the end of each 
@@ -434,7 +435,8 @@ uint16_t DMA_GetCurrDataCounter(DMA_Channel_TypeDef* DMAy_Channelx)
          (#) DMAy_FLAG_TEx : to indicate that a Transfer Error occurred.
          (#) DMAy_FLAG_GLx : to indicate that at least one of the events described 
              above occurred.
-    -@- Clearing DMAy_FLAG_GLx results in clearing all other pending flags of the 
+    [..]         
+    (@) Clearing DMAy_FLAG_GLx results in clearing all other pending flags of the 
         same channel (DMAy_FLAG_TCx, DMAy_FLAG_HTx and DMAy_FLAG_TEx).
     [..] In this Mode it is advised to use the following functions:
          (+) FlagStatus DMA_GetFlagStatus(uint32_t DMA_FLAG);

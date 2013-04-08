@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_i2c.c
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the Inter-Integrated circuit (I2C):
   *           + Initialization and Configuration
@@ -293,28 +293,26 @@ void I2C_Cmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
   }
 }
 
+
 /**
   * @brief  Enables or disables the specified I2C software reset.
   * @param  I2Cx: where x can be 1 or 2 to select the I2C peripheral.
-  * @param  NewState: new state of the I2C software reset.
-  *   This parameter can be: ENABLE or DISABLE.
   * @retval None
   */
-void I2C_SoftwareResetCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
+void I2C_SoftwareResetCmd(I2C_TypeDef* I2Cx)
 {
   /* Check the parameters */
   assert_param(IS_I2C_ALL_PERIPH(I2Cx));
-  assert_param(IS_FUNCTIONAL_STATE(NewState));
-  if (NewState != DISABLE)
-  {
-    /* Peripheral under reset */
-    I2Cx->CR1 |= I2C_CR1_SWRST;
-  }
-  else
-  {
-    /* Peripheral not under reset */
-    I2Cx->CR1 &= (uint32_t)~((uint32_t)I2C_CR1_SWRST);
-  }
+
+  /* Disable peripheral */
+  I2Cx->CR1 &= (uint32_t)~((uint32_t)I2C_CR1_PE);
+
+  /* Perform a dummy read to delay the disable of peripheral for minimum
+     3 APB clock cycles to perform the software reset functionality */
+  *(__IO uint32_t *)(uint32_t)I2Cx; 
+
+  /* Enable peripheral */
+  I2Cx->CR1 |= I2C_CR1_PE;
 }
 
 /**

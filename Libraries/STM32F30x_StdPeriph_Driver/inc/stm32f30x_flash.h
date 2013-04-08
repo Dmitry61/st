@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_flash.h
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file contains all the functions prototypes for the FLASH 
   *          firmware library.
   ******************************************************************************
@@ -67,7 +67,7 @@ typedef enum
 /** @defgroup Flash_Latency 
   * @{
   */ 
-#define FLASH_Latency_0                ((uint8_t)0x0000)  /*!< FLASH Zero Latency cycle */
+#define FLASH_Latency_0                ((uint8_t)0x0000)    /*!< FLASH Zero Latency cycle */
 #define FLASH_Latency_1                FLASH_ACR_LATENCY_0  /*!< FLASH One Latency cycle */
 #define FLASH_Latency_2                FLASH_ACR_LATENCY_1  /*!< FLASH Two Latency cycles */
 
@@ -107,15 +107,10 @@ typedef enum
   * @}
   */
 
-/**
-  * @}
-  */ 
-
 /** @defgroup Option_Bytes_Write_Protection 
   * @{
   */
   
-
 #define OB_WRP_Pages0to1               ((uint32_t)0x00000001) /* Write protection of page 0 to 1 */
 #define OB_WRP_Pages2to3               ((uint32_t)0x00000002) /* Write protection of page 2 to 3 */
 #define OB_WRP_Pages4to5               ((uint32_t)0x00000004) /* Write protection of page 4 to 5 */
@@ -226,8 +221,8 @@ typedef enum
   * @{
   */
 
-#define OB_VDDA_ANALOG_ON              ((uint8_t)0x00) /*!< Analog monitoring on VDDA Power source ON */
-#define OB_VDDA_ANALOG_OFF             ((uint8_t)0x20) /*!< Analog monitoring on VDDA Power source OFF */
+#define OB_VDDA_ANALOG_ON              ((uint8_t)0x20) /*!< Analog monitoring on VDDA Power source ON */
+#define OB_VDDA_ANALOG_OFF             ((uint8_t)0x00) /*!< Analog monitoring on VDDA Power source OFF */
 
 #define IS_OB_VDDA_ANALOG(ANALOG) (((ANALOG) == OB_VDDA_ANALOG_ON) || ((ANALOG) == OB_VDDA_ANALOG_OFF))
 
@@ -272,6 +267,11 @@ typedef enum
 /**
   * @}
   */ 
+
+/**
+  * @}
+  */ 
+  
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/ 
 

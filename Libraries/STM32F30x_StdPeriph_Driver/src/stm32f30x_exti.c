@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_exti.c
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the EXTI peripheral:
   *           + Initialization and Configuration 
@@ -245,6 +245,7 @@ void EXTI_GenerateSWInterrupt(uint32_t EXTI_Line)
  ===============================================================================
               ##### Interrupts and flags management functions #####
  ===============================================================================
+    [..]
     This section provides functions allowing to configure the EXTI Interrupts 
     sources and check or clear the flags or pending bits status.
     

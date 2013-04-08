@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_gpio.h
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file contains all the functions prototypes for the GPIO 
   *          firmware library. 
   ******************************************************************************
@@ -65,7 +65,7 @@ typedef enum
   GPIO_Mode_IN   = 0x00, /*!< GPIO Input Mode */
   GPIO_Mode_OUT  = 0x01, /*!< GPIO Output Mode */
   GPIO_Mode_AF   = 0x02, /*!< GPIO Alternate function Mode */
-  GPIO_Mode_AN   = 0x03  /*!< GPIO Analog Mode */
+  GPIO_Mode_AN   = 0x03  /*!< GPIO Analog In/Out Mode      */
 }GPIOMode_TypeDef;
 
 #define IS_GPIO_MODE(MODE) (((MODE) == GPIO_Mode_IN)|| ((MODE) == GPIO_Mode_OUT) || \
@@ -94,13 +94,13 @@ typedef enum
   */ 
 typedef enum
 { 
-  GPIO_Speed_2MHz   = 0x01, /*!< Medium Speed */
-  GPIO_Speed_10MHz  = 0x02, /*!< Fast Speed   */
-  GPIO_Speed_50MHz  = 0x03  /*!< High Speed   */
+  GPIO_Speed_Level_1  = 0x01, /*!< Fast Speed     */
+  GPIO_Speed_Level_2  = 0x02, /*!< Meduim Speed   */
+  GPIO_Speed_Level_3  = 0x03  /*!< High Speed     */
 }GPIOSpeed_TypeDef;
 
-#define IS_GPIO_SPEED(SPEED) (((SPEED) == GPIO_Speed_2MHz) || \
-                              ((SPEED) == GPIO_Speed_10MHz)||  ((SPEED) == GPIO_Speed_50MHz))
+#define IS_GPIO_SPEED(SPEED) (((SPEED) == GPIO_Speed_Level_1) || ((SPEED) == GPIO_Speed_Level_2) || \
+                              ((SPEED) == GPIO_Speed_Level_3))
 /**
   * @}
   */  
@@ -334,6 +334,18 @@ typedef struct
                           ((AF) == GPIO_AF_8)||((AF) == GPIO_AF_9)||\
                           ((AF) == GPIO_AF_10)||((AF) == GPIO_AF_11)||\
                           ((AF) == GPIO_AF_14)||((AF) == GPIO_AF_15))
+
+/**
+  * @}
+  */
+
+/** @defgroup GPIO_Speed_Legacy 
+  * @{
+  */
+
+#define GPIO_Speed_10MHz GPIO_Speed_Level_1   /*!< Fast Speed:10MHz   */
+#define GPIO_Speed_2MHz  GPIO_Speed_Level_2   /*!< Medium Speed:2MHz  */
+#define GPIO_Speed_50MHz GPIO_Speed_Level_3   /*!< High Speed:50MHz   */
 
 /**
   * @}

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_rtc.c
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the Real-Time Clock (RTC) peripheral:
   *           + Initialization
@@ -22,35 +22,58 @@
   *                     
   @verbatim
        
- ===============================================================================
-                            ##### RTC Domain Reset #####
- ===============================================================================
-    [..] After power-on reset, the RTC domain (RTC clock source configuration,
-         RTC registers and RTC Backup data registers) is reset. You can also
-         reset this domain by software using the RCC_RTCResetCmd() function.
-         
+ ===============================================================================     
                           ##### RTC Operating Condition #####
  ===============================================================================
-    [..] As long as the supply voltage remains in the operating range, 
-         the RTC never stops, regardless of the device status (Run mode, 
-         low power modes or under reset).
-              
-                            ##### RTC Domain Access #####
+    [..] The real-time clock (RTC) and the RTC backup registers can be powered
+         from the VBAT voltage when the main VDD supply is powered off.
+         To retain the content of the RTC backup registers and supply the RTC 
+         when VDD is turned off, VBAT pin can be connected to an optional
+         standby voltage supplied by a battery or by another source.
+  
+    [..] To allow the RTC to operate even when the main digital supply (VDD) 
+         is turned off, the VBAT pin powers the following blocks:
+           (#) The RTC
+           (#) The LSE oscillator
+           (#) PC13 to PC15 I/Os (when available)
+  
+    [..] When the backup domain is supplied by VDD (analog switch connected 
+         to VDD), the following functions are available:
+           (#) PC14 and PC15 can be used as either GPIO or LSE pins
+           (#) PC13 can be used as a GPIO or as the RTC_AF pin
+  
+    [..] When the backup domain is supplied by VBAT (analog switch connected 
+         to VBAT because VDD is not present), the following functions are available:
+           (#) PC14 and PC15 can be used as LSE pins only
+           (#) PC13 can be used as the RTC_AF pin 
+
+                        ##### Backup Domain Reset #####
  ===============================================================================
-    [..] After reset, the RTC domain (RTC clock source configuration,
-         RTC registers and RTC Backup data registers) are protected against 
-         possible stray write accesses. 
-         To enable access to the RTC Domain and RTC registers, proceed as follows:
-         (+) Enable the Power Controller (PWR) APB1 interface clock using the
+    [..] The backup domain reset sets all RTC registers and the RCC_BDCR 
+         register to their reset values. 
+         A backup domain reset is generated when one of the following events
+         occurs:
+           (#) Software reset, triggered by setting the BDRST bit in the 
+               RCC Backup domain control register (RCC_BDCR). You can use the
+               RCC_BackupResetCmd().
+           (#) VDD or VBAT power on, if both supplies have previously been
+               powered off.
+                         
+                        ##### Backup Domain Access #####
+ ===============================================================================
+    [..] After reset, the backup domain (RTC registers and RTC backup data 
+         registers) is protected against possible unwanted write accesses. 
+    [..] To enable access to the Backup Domain and RTC registers, proceed as follows:
+         (#) Enable the Power Controller (PWR) APB1 interface clock using the
              RCC_APB1PeriphClockCmd() function.
-         (+) Enable access to RTC domain using the PWR_BackupAccessCmd() function.
-         (+) Select the RTC clock source using the RCC_RTCCLKConfig() function.
-         (+) Enable RTC Clock using the RCC_RTCCLKCmd() function.
+         (#) Enable access to Backup domain using the PWR_BackupAccessCmd() function.
+         (#) Select the RTC clock source using the RCC_RTCCLKConfig() function.
+         (#) Enable RTC Clock using the RCC_RTCCLKCmd() function.
               
-                         ##### RTC Driver: how to use it #####
+                         ##### How to use this driver #####
  ===============================================================================
     [..]     
-         (+) Enable the RTC domain access (see description in the section above)
+        (+) Enable the backup domain access (see description in the section above)
          (+) Configure the RTC Prescaler (Asynchronous and Synchronous) and
              RTC hour format using the RTC_Init() function.
                 
@@ -89,10 +112,10 @@
     [..] The RTC has 2 different outputs:
          (+) AFO_ALARM: this output is used to manage the RTC Alarm A, Alarm B
              and WaKeUp signals.          
-             To output the selected RTC signal on RTC_AF1 pin, use the 
+             To output the selected RTC signal on RTC_AF pin, use the 
              RTC_OutputConfig() function.                
          (+) AFO_CALIB: this output is 512Hz signal or 1Hz .
-             To output the RTC Clock on RTC_AF1 pin, use the RTC_CalibOutputCmd()
+             To output the RTC Clock on RTC_AF pin, use the RTC_CalibOutputCmd()
              function.                
                 
     *** Smooth digital Calibration configuration ***
@@ -105,7 +128,7 @@
     *** TimeStamp configuration ***
     ===============================    
     [..]
-         (+) Configure the RTC_AF1 trigger and enables the RTC TimeStamp 
+         (+) Configure the RTC_AF trigger and enables the RTC TimeStamp 
              using the RTC_TimeStampCmd() function.
          (+) To read the RTC TimeStamp Time and Date register, use the 
              RTC_GetTimeStamp() function.
@@ -152,25 +175,25 @@
          Wakeup from STOP and Standby modes is possible only when the RTC 
          clock source is LSE or LSI.
            
-                ##### Selection of RTC_AF1 alternate functions #####
+                ##### Selection of RTC_AF alternate functions #####
  ===============================================================================
-    [..] The RTC_AF1 pin (PC13) can be used for the following purposes:
+    [..] The RTC_AF pin (PC13) can be used for the following purposes:
          (+) Wakeup pin 2 (WKUP2) using the PWR_WakeUpPinCmd() function.
-         (+) AFO_ALARM output.       
-         (+) AFO_CALIB output.
-         (+) AFI_TAMPER.
-         (+) AFI_TIMESTAMP.
+         (+) AFO_ALARM output      
+         (+) AFO_CALIB output
+         (+) AFI_TAMPER
+         (+) AFI_TIMESTAMP
                          
  +------------------------------------------------------------------------------------------+
- |     Pin         |AFO_ALARM |AFO_CALIB |AFI_TAMPER |AFI_TIMESTAMP | WKUP2  |ALARMOUTTYPE  |
- |  configuration  | ENABLED  | ENABLED  |  ENABLED  |   ENABLED    |ENABLED |  AFO_ALARM   |
- |  and function   |          |          |           |              |        |Configuration |
+ |     Pin         |RTC ALARM |RTC CALIB |RTC TAMPER |RTC TIMESTAMP |PC13MODE|  PC13VALUE   |
+ |  configuration  | OUTPUT   | OUTPUT   |  INPUT    |    INPUT     |  bit   |     bit      |
+ |  and function   | ENABLED  | ENABLED  | ENABLED   |   ENABLED    |        |              |
  |-----------------|----------|----------|-----------|--------------|--------|--------------|
  |   Alarm out     |          |          |           |              | Don't  |              |
- |   output OD     |     1    |    0     |Don't care | Don't care   | care   |      0       |
+ |   output OD     |     1    |Don't care|Don't care | Don't care   | care   |      0       |
  |-----------------|----------|----------|-----------|--------------|--------|--------------|
  |   Alarm out     |          |          |           |              | Don't  |              |
- |   output PP     |     1    |    0     |Don't care | Don't care   | care   |      1       |
+ |   output PP     |     1    |Don't care|Don't care | Don't care   | care   |      1       |
  |-----------------|----------|----------|-----------|--------------|--------|--------------|
  | Calibration out |          |          |           |              | Don't  |              |
  |   output PP     |     0    |    1     |Don't care | Don't care   | care   |  Don't care  |
@@ -185,9 +208,11 @@
  | TIMESTAMP input |          |          |           |              | Don't  |              |
  |    floating     |     0    |    0     |     0     |      1       | care   |  Don't care  |
  |-----------------|----------|----------|-----------|--------------|--------|--------------|
- |  Wakeup Pin 2   |     0    |    0     |     0     |      0       |   1    |  Don't care  |
+ |   Output PP     |     0    |    0     |     0     |      0       |   1    | PC13 output  |
+ |    Forced       |          |          |           |              |        |              |
  |-----------------|----------|----------|-----------|--------------|--------|--------------|
- |  Standard GPIO  |     0    |    0     |     0     |      0       |   0    |  Don't care  |
+ |  Wakeup Pin or  |     0    |    0     |     0     |      0       |   0    | Don't care   |
+ |  Standard GPIO  |          |          |           |              |        |              |
  +------------------------------------------------------------------------------------------+
     
   @endverbatim
@@ -1951,7 +1976,7 @@ void RTC_TamperTriggerConfig(uint32_t RTC_Tamper, uint32_t RTC_TamperTrigger)
   if (RTC_TamperTrigger == RTC_TamperTrigger_RisingEdge)
   {  
     /* Configure the RTC_TAFCR register */
-    RTC->TAFCR &= (uint32_t)((uint32_t)~(RTC_Tamper << 1));  
+    RTC->TAFCR &= (uint32_t)((uint32_t)~(RTC_Tamper << 1));	
   }
   else
   { 

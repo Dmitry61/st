@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x.h
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.0
+  * @date    04-September-2012
   * @brief   CMSIS Cortex-M4 Device Peripheral Access Layer Header File. 
   *          This file contains all the peripheral registers definitions, bits 
   *          definitions and memory mapping for STM32F30x devices.
@@ -12,8 +12,8 @@
   *          is using in the C source code, usually in main.c. This file contains:
   *           - Configuration section that allows to select:
   *              - The device used in the target application
-  *              - To use or not the peripheralï¿½s drivers in application code(i.e. 
-  *                code will be based on direct access to peripheralï¿½s registers 
+  *              - To use or not the peripheral’s drivers in application code(i.e. 
+  *                code will be based on direct access to peripheral’s registers 
   *                rather than drivers API), this option is controlled by 
   *                "#define USE_STDPERIPH_DRIVER"
   *              - To change few application-specific parameters such as the HSE 
@@ -129,10 +129,10 @@
 
 
 /**
- * @brief STM32F30x Standard Peripherals Library version number V0.1.0RC1
+ * @brief STM32F30x Standard Peripherals Library version number V1.0.0
    */
-#define __STM32F30X_STDPERIPH_VERSION_MAIN   (0x00) /*!< [31:24] main version */                                  
-#define __STM32F30X_STDPERIPH_VERSION_SUB1   (0x01) /*!< [23:16] sub1 version */
+#define __STM32F30X_STDPERIPH_VERSION_MAIN   (0x01) /*!< [31:24] main version */                                  
+#define __STM32F30X_STDPERIPH_VERSION_SUB1   (0x00) /*!< [23:16] sub1 version */
 #define __STM32F30X_STDPERIPH_VERSION_SUB2   (0x00) /*!< [15:8]  sub2 version */
 #define __STM32F30X_STDPERIPH_VERSION_RC     (0x00) /*!< [7:0]  release candidate */ 
 #define __STM32F30X_STDPERIPH_VERSION       ( (__STM32F30X_STDPERIPH_VERSION_MAIN << 24)\
@@ -1060,8 +1060,9 @@ typedef struct
 #define ADC_CR_JADSTART      ((uint32_t)0x00000008) /*!< ADC Start of injected conversion */
 #define ADC_CR_ADSTP         ((uint32_t)0x00000010) /*!< ADC Stop of Regular conversion */
 #define ADC_CR_JADSTP        ((uint32_t)0x00000020) /*!< ADC Stop of injected conversion */
-#define ADC_CR_ADVREGEN      ((uint32_t)0x10000000) /*!< ADC Voltage regulator Enable */
-#define ADC_CR_DEEPPWD       ((uint32_t)0x20000000) /*!< ADC Deep-power-down Enable */
+#define ADC_CR_ADVREGEN      ((uint32_t)0x30000000) /*!< ADC Voltage regulator Enable */
+#define ADC_CR_ADVREGEN_0    ((uint32_t)0x10000000) /*!< ADC ADVREGEN bit 0 */
+#define ADC_CR_ADVREGEN_1    ((uint32_t)0x20000000) /*!< ADC ADVREGEN bit 1 */
 #define ADC_CR_ADCALDIF      ((uint32_t)0x40000000) /*!< ADC Differential Mode for calibration */
 #define ADC_CR_ADCAL         ((uint32_t)0x80000000) /*!< ADC Calibration */
 
@@ -3660,11 +3661,11 @@ typedef struct
 #define  DBGMCU_APB1_FZ_DBG_CAN1_STOP            ((uint32_t)0x02000000)
 
 /********************  Bit definition for DBGMCU_APB2_FZ register  ************/
-#define  DBGMCU_APB1_FZ_DBG_TIM1_STOP        ((uint32_t)0x00000001)
-#define  DBGMCU_APB1_FZ_DBG_TIM8_STOP        ((uint32_t)0x00000002)
-#define  DBGMCU_APB1_FZ_DBG_TIM15_STOP       ((uint32_t)0x00000004)
-#define  DBGMCU_APB1_FZ_DBG_TIM16_STOP       ((uint32_t)0x00000008)
-#define  DBGMCU_APB1_FZ_DBG_TIM17_STOP       ((uint32_t)0x00000010)
+#define  DBGMCU_APB2_FZ_DBG_TIM1_STOP        ((uint32_t)0x00000001)
+#define  DBGMCU_APB2_FZ_DBG_TIM8_STOP        ((uint32_t)0x00000002)
+#define  DBGMCU_APB2_FZ_DBG_TIM15_STOP       ((uint32_t)0x00000004)
+#define  DBGMCU_APB2_FZ_DBG_TIM16_STOP       ((uint32_t)0x00000008)
+#define  DBGMCU_APB2_FZ_DBG_TIM17_STOP       ((uint32_t)0x00000010)
 
 /******************************************************************************/
 /*                                                                            */

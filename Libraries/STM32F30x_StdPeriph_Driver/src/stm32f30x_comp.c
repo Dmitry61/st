@@ -2,49 +2,43 @@
   ******************************************************************************
   * @file    stm32f30x_comp.c
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the 7 analog comparators (COMP1, COMP2...COMP7) peripheral: 
-  *           - Comparators configuration
-  *           - Window mode control
+  *           + Comparators configuration
+  *           + Window mode control
   *
-  *  @verbatim
-  *
-  *          ===================================================================
-  *                                 How to use this driver
-  *          ===================================================================
-  *                 
-  *          The device integrates 7 analog comparators COMP1, COMP2...COMP7:
-  *             - The non inverting input and inverting input can be set to GPIO pins
-  *               as shown in table1. COMP Inputs below.
-  *
-  *             - The COMP output is internally is available using COMP_GetOutputLevel()
-  *               and can be set on GPIO pins. Refer to table 2. COMP Outputs below.
-  *
-  *             - The COMP output can be redirected to embedded timers (TIM1, TIM2, TIM3...)
-  *               Refer to table 3. COMP Outputs redirection to embedded timers below.
-  *
-  *             - The comparators COMP1 and COMP2, COMP3 and COMP4, COMP5 and COMP6 can be combined in window
-  *               mode and only COMP1, COMP3 and COMP5 non inverting input can be used as non-inverting input.
-  *
-  *             - The seven comparators have interrupt capability with wake-up
-  *               from Sleep and Stop modes (through the EXTI controller):
-  *                 - COMP1 is internally connected to EXTI Line 21
-  *                 - COMP2 is internally connected to EXTI Line 22
-  *                 - COMP3 is internally connected to EXTI Line 29
-  *                 - COMP4 is internally connected to EXTI Line 30
-  *                 - COMP5 is internally connected to EXTI Line 31
-  *                 - COMP6 is internally connected to EXTI Line 32
-  *                 - COMP7 is internally connected to EXTI Line 33
-  *
-  *
-  *
-@verbatim
- ===============================================================================
-                       Analog comparators 
- ===============================================================================
-Table 1. COMP Inputs
+  @verbatim
+   
+  ==============================================================================
+                        ##### COMP Peripheral features #####
+  ==============================================================================
+  [..]       
+      The device integrates 7 analog comparators COMP1, COMP2...COMP7:
+      (#) The non inverting input and inverting input can be set to GPIO pins
+          as shown in table1. COMP Inputs below.
+  
+      (#) The COMP output is internally is available using COMP_GetOutputLevel()
+          and can be set on GPIO pins. Refer to table 2. COMP Outputs below.
+  
+      (#) The COMP output can be redirected to embedded timers (TIM1, TIM2, TIM3...)
+          Refer to table 3. COMP Outputs redirection to embedded timers below.
+  
+      (#) The comparators COMP1 and COMP2, COMP3 and COMP4, COMP5 and COMP6 can be combined in window
+          mode and only COMP1, COMP3 and COMP5 non inverting input can be used as non-inverting input.
+  
+      (#) The seven comparators have interrupt capability with wake-up
+          from Sleep and Stop modes (through the EXTI controller):
+          (++) COMP1 is internally connected to EXTI Line 21
+          (++) COMP2 is internally connected to EXTI Line 22
+          (++) COMP3 is internally connected to EXTI Line 29
+          (++) COMP4 is internally connected to EXTI Line 30
+          (++) COMP5 is internally connected to EXTI Line 31
+          (++) COMP6 is internally connected to EXTI Line 32
+          (++) COMP7 is internally connected to EXTI Line 33
+
+ [..] Table 1. COMP Inputs
  +------------------------------------------------------------------------------------------+     
  |                 |                | COMP1 | COMP2 | COMP3 | COMP4 | COMP5 | COMP6 | COMP7 |
  |-----------------|----------------|---------------|---------------------------------------|
@@ -61,7 +55,7 @@ Table 1. COMP Inputs
  |    Input        | IO2            |  ---  |  PA3  |  PD14 |  PE7  |  PB13 |  PB11 |  PC1  |
  +------------------------------------------------------------------------------------------+  
 
-Table 2. COMP Outputs
+ [..] Table 2. COMP Outputs
  +-------------------------------------------------------+     
  | COMP1 | COMP2 | COMP3 | COMP4 | COMP5 | COMP6 | COMP7 |
  |-------|-------|-------|-------|-------|-------|-------|
@@ -72,7 +66,7 @@ Table 2. COMP Outputs
  |  PB8  |  ---  |  ---  |  ---  |  ---  |  ---  |  ---  |
  +-------------------------------------------------------+
 
-Table 3. COMP Outputs redirection to embedded timers
+ [..] Table 3. COMP Outputs redirection to embedded timers
  +----------------------------------------------------------------------------------------------------------------------+     
  |     COMP1      |     COMP2      |     COMP3      |     COMP4      |     COMP5      |     COMP6      |     COMP7      |
  |----------------|----------------|----------------|----------------|----------------|----------------|----------------|
@@ -101,7 +95,7 @@ Table 3. COMP Outputs redirection to embedded timers
  |  TIM3 OCREFCLR |  TIM3 OCREFCLR |  TIM15 BKIN    |  TIM15 IC2     |  TIM17 IC1     |  TIM4 IC4      |  TIM17 BKIN    |
  +----------------------------------------------------------------------------------------------------------------------+
 
-Table 4. COMP Outputs blanking sources
+ [..] Table 4. COMP Outputs blanking sources
  +----------------------------------------------------------------------------------------------------------------------+
  |     COMP1      |     COMP2      |     COMP3      |     COMP4      |     COMP5      |     COMP6      |     COMP7      |
  |----------------|----------------|----------------|----------------|----------------|----------------|----------------|
@@ -113,40 +107,40 @@ Table 4. COMP Outputs blanking sources
  |                |                |                |                |                |                |                |
  +----------------------------------------------------------------------------------------------------------------------+
 
-@endverbatim
-  *          ===================================================================
-  *                              How to configure the comparator
-  *          ===================================================================
-  *          This driver provides functions to configure and program the Comparators 
-  *          of all STM32F30x devices.
-  *
-  *          To use the comparator, perform the following steps:
-  *
-  *          1- Enable the SYSCFG APB clock to get write access to comparator
-  *             register using RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
-  *
-  *          2- Configure the comparator input in analog mode using GPIO_Init()
-  *
-  *          3- Configure the comparator output in alternate function mode
-  *             using GPIO_Init() and use GPIO_PinAFConfig() function to map the
-  *             comparator output to the GPIO pin
-  *
-  *          4- Configure the comparator using COMP_Init() function:
-  *                 - Select the inverting input
-  *                 - Select the non-inverting input
-  *                 - Select the output polarity  
-  *                 - Select the output redirection
-  *                 - Select the hysteresis level
-  *                 - Select the power mode
-  *
-  *          5- Enable the comparator using COMP_Cmd() function
-  *
-  *          6- If required enable the COMP interrupt by configuring and enabling
-  *             EXTI line in Interrupt mode and selecting the desired sensitivity
-  *             level using EXTI_Init() function. After that enable the comparator
-  *             interrupt vector using NVIC_Init() function.
-  *
-  *  @endverbatim
+  
+                         ##### How to use this driver #####
+  ==============================================================================
+  [..]
+  This driver provides functions to configure and program the Comparators 
+  of all STM32F30x devices.
+  
+  To use the comparator, perform the following steps:
+  
+  (#) Enable the SYSCFG APB clock to get write access to comparator
+      register using RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
+  
+  (#) Configure the comparator input in analog mode using GPIO_Init()
+  
+  (#) Configure the comparator output in alternate function mode
+      using GPIO_Init() and use GPIO_PinAFConfig() function to map the
+      comparator output to the GPIO pin
+  
+  (#) Configure the comparator using COMP_Init() function:
+      (++) Select the inverting input
+      (++) Select the non-inverting input
+      (++) Select the output polarity  
+      (++) Select the output redirection
+      (++) Select the hysteresis level
+      (++) Select the power mode
+  
+  (#) Enable the comparator using COMP_Cmd() function
+  
+  (#) If required enable the COMP interrupt by configuring and enabling
+      EXTI line in Interrupt mode and selecting the desired sensitivity
+      level using EXTI_Init() function. After that enable the comparator
+      interrupt vector using NVIC_Init() function.
+
+  @endverbatim
   *    
   ******************************************************************************
   * @attention
@@ -199,7 +193,7 @@ Table 4. COMP Outputs blanking sources
  *
 @verbatim   
  ===============================================================================
-                        Initialization and Configuration functions
+            ##### Initialization and Configuration functions #####
  ===============================================================================  
 
 @endverbatim
@@ -409,7 +403,7 @@ uint32_t COMP_GetOutputLevel(uint32_t COMP_Selection)
  *
 @verbatim   
  ===============================================================================
-                              Window mode control function
+                    ##### Window mode control function #####
  ===============================================================================  
 
 @endverbatim
@@ -465,7 +459,7 @@ void COMP_WindowCmd(uint32_t COMP_Selection, FunctionalState NewState)
  *
 @verbatim   
  ===============================================================================
-                              Configuration Lock function
+                   ##### Configuration Lock function #####
  ===============================================================================  
 
 @endverbatim

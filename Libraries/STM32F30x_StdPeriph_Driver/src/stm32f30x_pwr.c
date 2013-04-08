@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_pwr.c
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the Power Controller (PWR) peripheral:           
   *           + Backup Domain Access
@@ -373,7 +373,7 @@ void PWR_EnterSleepMode(uint8_t PWR_SLEEPEntry)
   * @brief  Enters STOP mode.
   * @note   In Stop mode, all I/O pins keep the same state as in Run mode.
   * @note   When exiting Stop mode by issuing an interrupt or a wakeup event, 
-  *         the MSI RC oscillator is selected as system clock.
+  *         the HSI RC oscillator is selected as system clock.
   * @note   When the voltage regulator operates in low power mode, an additional 
   *         startup delay is incurred when waking up from Stop mode. 
   *         By keeping the internal regulator ON during Stop mode, the consumption 

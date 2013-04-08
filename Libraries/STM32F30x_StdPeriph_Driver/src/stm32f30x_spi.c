@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_spi.c
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the Serial peripheral interface (SPI):
   *           + Initialization and Configuration
@@ -35,7 +35,9 @@
         (#) Program the Polarity, Phase, First Data, Baud Rate Prescaler, Slave 
             Management, Peripheral Mode and CRC Polynomial values using the SPI_Init()
             function in SPI mode. In I2S mode, program the Mode, Standard, Data Format,
-            MCLK Output, Audio frequency and Polarity using I2S_Init() function.     
+            MCLK Output, Audio frequency and Polarity using I2S_Init() function.
+        (#) Configure the FIFO threshold using SPI_RxFIFOThresholdConfig() to select 
+            at which threshold the RXNE event is generated.     
         (#) Enable the NVIC and the corresponding interrupt using the function 
             SPI_I2S_ITConfig() if you need to use interrupt mode. 
         (#) When using the DMA mode 
@@ -93,7 +95,7 @@
              rxdata[i] = SPI_I2S_ReceiveData16(I2S3ext);
              ...          
     [..]
-    -@- In SPI mode: To use the SPI TI mode, call the function SPI_TIModeCmd() 
+    (@) In SPI mode: To use the SPI TI mode, call the function SPI_TIModeCmd() 
         just after calling the function SPI_Init().  
               
     @endverbatim
@@ -822,7 +824,7 @@ void SPI_NSSPulseModeCmd(SPI_TypeDef* SPIx, FunctionalState NewState)
 /**
   * @brief  Transmits a Data through the SPIx peripheral.
   * @param  SPIx: where x can be 1, 2 or 3 to select the SPI peripheral.
-  * @param  uint16_t: Data to be transmitted.
+  * @param  Data: Data to be transmitted.
   * @retval None
   */
 void SPI_SendData8(SPI_TypeDef* SPIx, uint8_t Data)
@@ -856,7 +858,7 @@ void SPI_I2S_SendData16(SPI_TypeDef* SPIx, uint16_t Data)
 /**
   * @brief  Returns the most recent received data by the SPIx peripheral. 
   * @param  SPIx: where x can be 1, 2 or 3 to select the SPI peripheral.
-  * @retval uint8_t: The value of the received data.
+  * @retval The value of the received data.
   */
 uint8_t SPI_ReceiveData8(SPI_TypeDef* SPIx)
 {
@@ -875,7 +877,7 @@ uint8_t SPI_ReceiveData8(SPI_TypeDef* SPIx)
   * @brief  Returns the most recent received data by the SPIx peripheral. 
   * @param  SPIx: To select the SPIx/I2Sx peripheral, where x can be: 1, 2 or 3 
   *         in SPI mode or 2 or 3 in I2S mode or I2Sxext for I2S full duplex mode.
-  * @retval uint16_t: The value of the received data.
+  * @retval The value of the received data.
   */
 uint16_t SPI_I2S_ReceiveData16(SPI_TypeDef* SPIx)
 {  
@@ -911,7 +913,8 @@ uint16_t SPI_I2S_ReceiveData16(SPI_TypeDef* SPIx)
              value. 
              If the value does not match, the SPI_FLAG_CRCERR flag is set and an interrupt
              can be generated when the SPI_I2S_IT_ERR interrupt is enabled.
-    -@-
+    [..]
+    (@)
          (+@) It is advised to don't read the calculate CRC values during the communication.
          (+@) When the SPI is in slave mode, be careful to enable CRC calculation only 
               when the clock is stable, that is, when the clock is in the steady state. 
@@ -938,7 +941,8 @@ uint16_t SPI_I2S_ReceiveData16(SPI_TypeDef* SPIx)
               (low level on NSS), the CRC value should be cleared on both master and slave
               sides in order to resynchronize the master and slave for their respective 
               CRC calculation.
-    -@- To clear the CRC, follow the procedure below:
+    [..]          
+    (@) To clear the CRC, follow the procedure below:
          (#@) Disable SPI using the SPI_Cmd() function.
          (#@) Disable the CRC calculation using the SPI_CalculateCRC() function.
          (#@) Enable the CRC calculation using the SPI_CalculateCRC() function.

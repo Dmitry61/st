@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_rcc.c
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the Reset and clock control (RCC) peripheral:           
   *           + Internal/external clocks, PLL, CSS and MCO configuration
@@ -20,7 +20,7 @@
          all peripherals are off except internal SRAM, Flash and SWD.
          (+) There is no prescaler on High speed (AHB) and Low speed (APB) busses;
              all peripherals mapped on these busses are running at HSI speed.
-         (+) The clock for all peripherals is switched off, except the SRAM and FLASH.
+       	 (+) The clock for all peripherals is switched off, except the SRAM and FLASH.
          (+) All GPIOs are in input floating state, except the SWD pins which
              are assigned to be used for debug purpose.
     [..] Once the device starts from reset, the user application has to:        
@@ -155,7 +155,7 @@ static __I uint16_t ADCPrescTable[13] = {0, 1, 2, 4, 6, 8, 10, 12, 16, 32, 64, 1
              The HSI clock can be used also to clock the USART and I2C peripherals.
          (#) LSI (low-speed internal), 40 KHz low consumption RC used as IWDG and/or RTC
              clock source.
-         (#) HSE (high-speed external), 4 to 72 MHz crystal oscillator used directly or
+         (#) HSE (high-speed external), 4 to 32 MHz crystal oscillator used directly or
              through the PLL as System clock source. Can be used also as RTC clock source.
          (#) LSE (low-speed external), 32 KHz oscillator used as RTC clock source.
              LSE can be used also to clock the USART peripherals.
@@ -545,17 +545,6 @@ void RCC_MCOConfig(uint8_t RCC_MCOSource)
              configurable prescalers and used to clock the peripherals mapped on these busses.
              You can use "RCC_GetClocksFreq()" function to retrieve the frequencies of these clocks.
 
-         -@- All the peripheral clocks are derived from the System clock (SYSCLK) 
-             except:
-             (+@) The FLASH program/erase clock  which is always HSI 8MHz clock.
-             (+@) The USB 48 MHz clock which is derived from the PLL VCO clock.
-             (+@) The USART clock which can be derived as well from HSI 8MHz, LSI or LSE.
-             (+@) The I2C clock which can be derived as well from HSI 8MHz clock.
-             (+@) The ADC clock which is derived from PLL output.
-             (+@) The RTC clock which is derived from the LSE, LSI or 1 MHz HSE_RTC 
-                  (HSE divided by a programmable prescaler). The System clock (SYSCLK) 
-                  frequency must be higher or equal to the RTC clock frequency.
-             (+@) IWDG clock which is always the LSI clock.
          (#) The maximum frequency of the SYSCLK, HCLK, PCLK1 and PCLK2 is 72 MHz.
              Depending on the maximum frequency, the FLASH wait states (WS) should be 
              adapted accordingly:
@@ -572,30 +561,42 @@ void RCC_MCOConfig(uint8_t RCC_MCOSource)
 
          (#) After reset, the System clock source is the HSI (8 MHz) with 0 WS and 
              prefetch is disabled.
+        [..]
+         (@) All the peripheral clocks are derived from the System clock (SYSCLK) 
+             except:
+             (+@) The FLASH program/erase clock  which is always HSI 8MHz clock.
+             (+@) The USB 48 MHz clock which is derived from the PLL VCO clock.
+             (+@) The USART clock which can be derived as well from HSI 8MHz, LSI or LSE.
+             (+@) The I2C clock which can be derived as well from HSI 8MHz clock.
+             (+@) The ADC clock which is derived from PLL output.
+             (+@) The RTC clock which is derived from the LSE, LSI or 1 MHz HSE_RTC 
+                  (HSE divided by a programmable prescaler). The System clock (SYSCLK) 
+                  frequency must be higher or equal to the RTC clock frequency.
+             (+@) IWDG clock which is always the LSI clock.
     [..] It is recommended to use the following software sequences to tune the number
          of wait states needed to access the Flash memory with the CPU frequency (HCLK).
          (+) Increasing the CPU frequency
-         (++) Program the Flash Prefetch buffer, using "FLASH_PrefetchBufferCmd(ENABLE)" 
-             function
-         (++) Check that Flash Prefetch buffer activation is taken into account by 
-             reading FLASH_ACR using the FLASH_GetPrefetchBufferStatus() function
-         (++) Program Flash WS to 1 or 2, using "FLASH_SetLatency()" function
-         (++) Check that the new number of WS is taken into account by reading FLASH_ACR
-         (++) Modify the CPU clock source, using "RCC_SYSCLKConfig()" function
-         (++) If needed, modify the CPU clock prescaler by using "RCC_HCLKConfig()" function
-         (++) Check that the new CPU clock source is taken into account by reading 
-              the clock source status, using "RCC_GetSYSCLKSource()" function 
+            (++) Program the Flash Prefetch buffer, using "FLASH_PrefetchBufferCmd(ENABLE)" 
+                 function
+            (++) Check that Flash Prefetch buffer activation is taken into account by 
+                 reading FLASH_ACR using the FLASH_GetPrefetchBufferStatus() function
+            (++) Program Flash WS to 1 or 2, using "FLASH_SetLatency()" function
+            (++) Check that the new number of WS is taken into account by reading FLASH_ACR
+            (++) Modify the CPU clock source, using "RCC_SYSCLKConfig()" function
+            (++) If needed, modify the CPU clock prescaler by using "RCC_HCLKConfig()" function
+            (++) Check that the new CPU clock source is taken into account by reading 
+                 the clock source status, using "RCC_GetSYSCLKSource()" function 
          (+) Decreasing the CPU frequency
-         (++) Modify the CPU clock source, using "RCC_SYSCLKConfig()" function
-         (++) If needed, modify the CPU clock prescaler by using "RCC_HCLKConfig()" function
-         (++) Check that the new CPU clock source is taken into account by reading 
-              the clock source status, using "RCC_GetSYSCLKSource()" function
-         (++) Program the new number of WS, using "FLASH_SetLatency()" function
-         (++) Check that the new number of WS is taken into account by reading FLASH_ACR
-         (++) Disable the Flash Prefetch buffer using "FLASH_PrefetchBufferCmd(DISABLE)" 
-              function
-         (++) Check that Flash Prefetch buffer deactivation is taken into account by reading FLASH_ACR
-              using the FLASH_GetPrefetchBufferStatus() function.
+            (++) Modify the CPU clock source, using "RCC_SYSCLKConfig()" function
+            (++) If needed, modify the CPU clock prescaler by using "RCC_HCLKConfig()" function
+            (++) Check that the new CPU clock source is taken into account by reading 
+                 the clock source status, using "RCC_GetSYSCLKSource()" function
+            (++) Program the new number of WS, using "FLASH_SetLatency()" function
+            (++) Check that the new number of WS is taken into account by reading FLASH_ACR
+            (++) Disable the Flash Prefetch buffer using "FLASH_PrefetchBufferCmd(DISABLE)" 
+                 function
+            (++) Check that Flash Prefetch buffer deactivation is taken into account by reading FLASH_ACR
+                 using the FLASH_GetPrefetchBufferStatus() function.
 
 @endverbatim
   * @{
@@ -752,9 +753,14 @@ void RCC_PCLK2Config(uint32_t RCC_HCLK)
 
 /**
   * @brief  Returns the frequencies of the System, AHB, APB2 and APB1 busses clocks.
+  * 
+  *  @note    This function returns the frequencies of :
+  *           System, AHB, APB2 and APB1 busses clocks, ADC1/2/3/4 clocks, 
+  *           USART1/2/3/4/5 clocks, I2C1/2 clocks and TIM1/8 Clocks.
+  *                         
   * @note     The frequency returned by this function is not the real frequency
   *           in the chip. It is calculated based on the predefined constant and
-  *           the source selected by RCC_SYSCLKConfig():
+  *           the source selected by RCC_SYSCLKConfig().
   *                                              
   * @note      If SYSCLK source is HSI, function returns constant HSI_VALUE(*)
   *                                              
@@ -768,7 +774,7 @@ void RCC_PCLK2Config(uint32_t RCC_HCLK)
   *               in voltage and temperature, refer to RCC_AdjustHSICalibrationValue().   
   *    
   * @note     (**) HSE_VALUE is a constant defined in stm32f30x.h file (default value
-  *                32 MHz), user has to ensure that HSE_VALUE is same as the real
+  *                8 MHz), user has to ensure that HSE_VALUE is same as the real
   *                frequency of the crystal used. Otherwise, this function may
   *                return wrong result.
   *                
@@ -1156,7 +1162,7 @@ void RCC_I2CCLKConfig(uint32_t RCC_I2CCLK)
   * @brief  Configures the TIM1 and TIM8 clock sources(TIMCLK).
   * @note     The configuration of the TIMx clock source is only possible when the 
   *           SYSCLK = PLL and HCLK and PCLK2 clocks are not divided in respect to SYSCLK
-  * @note     If one of the previous condition is missed, the TIM clock source 
+  * @note     If one of the previous conditions is missed, the TIM clock source 
   *           configuration is lost and calling again this function becomes mandatory.  
   * @param  RCC_TIMCLK: defines the TIMx clock source.
   *   This parameter can be one of the following values:

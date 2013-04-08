@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_spi.h
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file contains all the functions prototypes for the SPI 
   *          firmware library.
   ******************************************************************************
@@ -283,7 +283,7 @@ typedef struct
   * @}
   */
   
-/** @defgroup SPI_I2S_Mode 
+/** @defgroup I2S_Mode 
   * @{
   */
 
@@ -299,7 +299,7 @@ typedef struct
   * @}
   */
 
-/** @defgroup SPI_I2S_Standard 
+/** @defgroup I2S_Standard 
   * @{
   */
 
@@ -317,7 +317,7 @@ typedef struct
   * @}
   */
 
-/** @defgroup SPI_I2S_Data_Format 
+/** @defgroup I2S_Data_Format 
   * @{
   */
 
@@ -333,7 +333,7 @@ typedef struct
   * @}
   */
 
-/** @defgroup SPI_I2S_MCLK_Output 
+/** @defgroup I2S_MCLK_Output 
   * @{
   */
 
@@ -345,7 +345,7 @@ typedef struct
   * @}
   */
 
-/** @defgroup SPI_I2S_Audio_Frequency 
+/** @defgroup I2S_Audio_Frequency 
   * @{
   */
 
@@ -367,7 +367,7 @@ typedef struct
   * @}
   */
 
-/** @defgroup SPI_I2S_Clock_Polarity 
+/** @defgroup I2S_Clock_Polarity 
   * @{
   */
 

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_i2c.h
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file contains all the functions prototypes for the I2C firmware
   *          library.
   ******************************************************************************
@@ -54,25 +54,26 @@
 typedef struct
 {
   uint32_t I2C_Timing;              /*!< Specifies the I2C_TIMINGR_register value.
-                                         This parameter must be set by referring to I2C_Timing_Config_Tool*/
+                                         This parameter calculated by referring to I2C initialization 
+                                         section in Reference manual*/
 
   uint32_t I2C_AnalogFilter;        /*!< Enables or disables analog noise filter.
-                                         This parameter can be a value of @ref I2C_Analog_Filter*/
+                                         This parameter can be a value of @ref I2C_Analog_Filter */
 
   uint32_t I2C_DigitalFilter;       /*!< Configures the digital noise filter.
-                                         This parameter can be a number between 0x00 and 0x0F*/
+                                         This parameter can be a number between 0x00 and 0x0F */
 
   uint32_t I2C_Mode;                /*!< Specifies the I2C mode.
-                                         This parameter can be a value of @ref I2C_mode*/
+                                         This parameter can be a value of @ref I2C_mode */
 
   uint32_t I2C_OwnAddress1;         /*!< Specifies the device own address 1.
-                                         This parameter can be a 7-bit or 10-bit address*/
+                                         This parameter can be a 7-bit or 10-bit address */
 
   uint32_t I2C_Ack;                 /*!< Enables or disables the acknowledgement.
-                                         This parameter can be a value of @ref I2C_acknowledgement*/
+                                         This parameter can be a value of @ref I2C_acknowledgement */
 
   uint32_t I2C_AcknowledgedAddress; /*!< Specifies if 7-bit or 10-bit address is acknowledged.
-                                         This parameter can be a value of @ref I2C_acknowledged_address*/
+                                         This parameter can be a value of @ref I2C_acknowledged_address */
 }I2C_InitTypeDef;
 
 /* Exported constants --------------------------------------------------------*/
@@ -207,7 +208,7 @@ typedef struct
   */
 
 #define I2C_OA2_NoMask                  ((uint8_t)0x00)
-#define I2C_OA2_Mask01                  ((uint8_t)0x01)                 
+#define I2C_OA2_Mask01                  ((uint8_t)0x01)
 #define I2C_OA2_Mask02                  ((uint8_t)0x02)
 #define I2C_OA2_Mask03                  ((uint8_t)0x03)
 #define I2C_OA2_Mask04                  ((uint8_t)0x04)
@@ -407,7 +408,7 @@ void I2C_DeInit(I2C_TypeDef* I2Cx);
 void I2C_Init(I2C_TypeDef* I2Cx, I2C_InitTypeDef* I2C_InitStruct);
 void I2C_StructInit(I2C_InitTypeDef* I2C_InitStruct);
 void I2C_Cmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
-void I2C_SoftwareResetCmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
+void I2C_SoftwareResetCmd(I2C_TypeDef* I2Cx);
 void I2C_ITConfig(I2C_TypeDef* I2Cx, uint32_t I2C_IT, FunctionalState NewState);
 void I2C_StretchClockCmd(I2C_TypeDef* I2Cx, FunctionalState NewState);
 void I2C_StopModeCmd(I2C_TypeDef* I2Cx, FunctionalState NewState);

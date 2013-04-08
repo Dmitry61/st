@@ -2,23 +2,23 @@
   ******************************************************************************
   * @file    stm32f30x_usart.c
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file provides firmware functions to manage the following
   *          functionalities of the Universal synchronous asynchronous receiver
   *          transmitter (USART):
-  *           - Initialization and Configuration
-  *           - STOP Mode
-  *           - AutoBaudRate
-  *           - Data transfers
-  *           - Multi-Processor Communication
-  *           - LIN mode
-  *           - Half-duplex mode
-  *           - Smartcard mode
-  *           - IrDA mode
-  *           - RS485 mode  
-  *           - DMA transfers management
-  *           - Interrupts and flags management
+  *           + Initialization and Configuration
+  *           + STOP Mode
+  *           + AutoBaudRate
+  *           + Data transfers
+  *           + Multi-Processor Communication
+  *           + LIN mode
+  *           + Half-duplex mode
+  *           + Smartcard mode
+  *           + IrDA mode
+  *           + RS485 mode  
+  *           + DMA transfers management
+  *           + Interrupts and flags management
   *           
   *  @verbatim  
  ===============================================================================
@@ -1090,10 +1090,11 @@ void USART_AddressDetectionConfig(USART_TypeDef* USARTx, uint32_t USART_AddressL
          (#) Configures the break detection length 
              using the USART_LINBreakDetectLengthConfig() function.
          (#) Enable the LIN mode using the USART_LINCmd() function.
-         -@- In LIN mode, the following bits must be kept cleared:
+         (#) Enable the USART using the USART_Cmd() function.
+         [..]
+         (@) In LIN mode, the following bits must be kept cleared:
              (+@) CLKEN in the USART_CR2 register.
              (+@) STOP[1:0], SCEN, HDSEL and IREN in the USART_CR3 register.
-         (#) Enable the USART using the USART_Cmd() function.
 
 @endverbatim
   * @{
@@ -1167,8 +1168,9 @@ void USART_LINCmd(USART_TypeDef* USARTx, FunctionalState NewState)
          (#) Configures the USART address using the USART_SetAddress() function.
          (#) Enable the half duplex mode using USART_HalfDuplexCmd() function.
          (#) Enable the USART using the USART_Cmd() function.
-         -@- The RX pin is no longer used.
-         -@- In Half-duplex mode the following bits must be kept cleared:
+         [..]
+         (@) The RX pin is no longer used.
+         (@) In Half-duplex mode the following bits must be kept cleared:
              (+@) LINEN and CLKEN bits in the USART_CR2 register.
              (+@) SCEN and IREN bits in the USART_CR3 register.
 
@@ -1474,8 +1476,8 @@ void USART_IrDACmd(USART_TypeDef* USARTx, FunctionalState NewState)
              function and deassertion time using the USART_SetDEDeassertionTime()
              function.    
          (#) Enable the USART using the USART_Cmd() function.
-      -@-  
-       (+@) The assertion and dessertion times are expressed in sample time units (1/8 or 
+      [..]  
+       (@) The assertion and dessertion times are expressed in sample time units (1/8 or 
             1/16 bit time, depending on the oversampling rate).
        
 @endverbatim

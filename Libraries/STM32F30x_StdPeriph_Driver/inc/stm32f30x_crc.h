@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_crc.h
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file contains all the functions prototypes for the CRC firmware 
   *          library.
   ******************************************************************************
@@ -87,10 +87,10 @@
 /* Configuration of the CRC computation unit **********************************/
 void CRC_DeInit(void);
 void CRC_ResetDR(void);
-void CRC_PolynomialSizeSelect(uint32_t CRC_PolSize); /* Select or Config, which one is the best */
+void CRC_PolynomialSizeSelect(uint32_t CRC_PolSize); 
 void CRC_ReverseInputDataSelect(uint32_t CRC_ReverseInputData);
 void CRC_ReverseOutputDataCmd(FunctionalState NewState);
-void CRC_SetInitRegister(uint32_t CRC_InitValue); /* change the function proto to SetInitRemainder() ??? */
+void CRC_SetInitRegister(uint32_t CRC_InitValue); 
 void CRC_SetPolynomial(uint32_t CRC_Pol);
 
 /* CRC computation ************************************************************/

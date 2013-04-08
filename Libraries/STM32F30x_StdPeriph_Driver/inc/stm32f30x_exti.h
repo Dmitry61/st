@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_exti.h
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file contains all the functions prototypes for the EXTI 
   *          firmware library.
   ******************************************************************************
@@ -130,7 +130,7 @@ typedef struct
                                                       and Time Stamp events */
 #define EXTI_Line20      ((uint32_t)0x14)  /*!< Internal interrupt line 20
                                                       Connected to the RTC wakeup
-                                                      event */
+                                                      event */                                                      
 #define EXTI_Line21      ((uint32_t)0x15)  /*!< Internal interrupt line 21
                                                       Connected to the Comparator 1
                                                       event */
@@ -175,7 +175,7 @@ typedef struct
 #define EXTI_Line35      ((uint32_t)0x23)  /*!< Internal interrupt line 35
                                                       Connected to the USART5 wakeup
                                                       event */
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                
 #define IS_EXTI_LINE_ALL(LINE) ((LINE) <= 0x23)
 #define IS_EXTI_LINE_EXT(LINE) (((LINE) <= 0x16) || (((LINE) == EXTI_Line29) || ((LINE) == EXTI_Line30) || \
                                ((LINE) == EXTI_Line31) || ((LINE) == EXTI_Line32) || ((LINE) == EXTI_Line33)))

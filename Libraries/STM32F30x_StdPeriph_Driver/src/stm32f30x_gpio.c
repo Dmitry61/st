@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_gpio.c
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the GPIO peripheral:
   *           + Initialization and Configuration functions
@@ -33,8 +33,7 @@
              analog mode using GPIO_InitStruct->GPIO_Mode = GPIO_Mode_AN
         (++) For other peripherals (TIM, USART...):
              (+++) Connect the pin to the desired peripherals' Alternate 
-                   Function (AF) using GPIO_PinAFConfig() function. For PortC, 
-                   PortD and PortF, no configuration is needed.
+                   Function (AF) using GPIO_PinAFConfig() function.
              (+++) Configure the desired pin in alternate function mode using
                    GPIO_InitStruct->GPIO_Mode = GPIO_Mode_AF
              (+++) Select the type, pull-up/pull-down and output speed via 
@@ -167,8 +166,7 @@ void GPIO_DeInit(GPIO_TypeDef* GPIOx)
   *         contains the configuration information for the specified GPIO
   *         peripheral.
   * @note   GPIO_Pin: selects the pin to be configured:
-  *         GPIO_Pin_0->GPIO_Pin_15 for GPIOA, GPIOC, GPIOD and GPIOE;
-  *         GPIO_Pin_0->GPIO_Pin_10 and GPIO_Pin_14 -> GPIO_Pin_15 for GPIOB;
+  *         GPIO_Pin_0->GPIO_Pin_15 for GPIOA, GPIOB, GPIOC, GPIOD and GPIOE;
   *         GPIO_Pin_0->GPIO_Pin_2, GPIO_Pin_4, GPIO_Pin_6, GPIO_Pin_9 
   *                       and GPIO_Pin_10 for GPIOF.
   * @retval None
@@ -291,8 +289,7 @@ void GPIO_PinLockConfig(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
   * @param  GPIOx: where x can be (A, B, C, D, E or F) to select the GPIO peripheral.
   * @param  GPIO_Pin: specifies the port bit to read.
   * @note   This parameter can be GPIO_Pin_x where x can be :
-  *         (0..15) for GPIOA, GPIOC, GPIOD or GPIOE;
-  *         (0..10 & 14..15) for GPIOB;
+  *         (0..15) for GPIOA, GPIOB, GPIOC, GPIOD or GPIOE;
   *         (0..2, 4, 6, 9..10) for GPIOF.
   * @retval The input port pin value.
   */
@@ -333,8 +330,7 @@ uint16_t GPIO_ReadInputData(GPIO_TypeDef* GPIOx)
   * @param  GPIOx: where x can be (A, B, C, D, E or F) to select the GPIO peripheral.
   * @param  GPIO_Pin: Specifies the port bit to read.
   * @note   This parameter can be GPIO_Pin_x where x can be :
-  *         (0..15) for GPIOA, GPIOC, GPIOD or GPIOE;
-  *         (0..10 & 14..15) for GPIOB;
+  *         (0..15) for GPIOA, GPIOB, GPIOC, GPIOD or GPIOE;
   *         (0..2, 4, 6, 9..10) for GPIOF.
   * @retval The output port pin value.
   */
@@ -375,8 +371,7 @@ uint16_t GPIO_ReadOutputData(GPIO_TypeDef* GPIOx)
   * @param  GPIOx: where x can be (A, B, C, D, E or F) to select the GPIO peripheral.
   * @param  GPIO_Pin: specifies the port bits to be written.
   * @note   This parameter can be GPIO_Pin_x where x can be :
-  *         (0..15) for GPIOA, GPIOC, GPIOD or GPIOE;
-  *         (0..10 & 14..15) for GPIOB;
+  *         (0..15) for GPIOA, GPIOB, GPIOC, GPIOD or GPIOE;
   *         (0..2, 4, 6, 9..10) for GPIOF.
   * @retval None
   */
@@ -394,8 +389,7 @@ void GPIO_SetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
   * @param  GPIOx: where x can be (A, B, C, D, E or F) to select the GPIO peripheral.
   * @param  GPIO_Pin: specifies the port bits to be written.
   * @note   This parameter can be GPIO_Pin_x where x can be :
-  *         (0..15) for GPIOA, GPIOC, GPIOD or GPIOE;
-  *         (0..10 & 14..15) for GPIOB;
+  *         (0..15) for GPIOA, GPIOB, GPIOC, GPIOD or GPIOE;
   *         (0..2, 4, 6, 9..10) for GPIOF.
   * @retval None
   */
@@ -413,8 +407,7 @@ void GPIO_ResetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
   * @param  GPIOx: where x can be (A, B, C, D, E or F) to select the GPIO peripheral.
   * @param  GPIO_Pin: specifies the port bit to be written.
   * @note   This parameter can be GPIO_Pin_x where x can be :
-  *         (0..15) for GPIOA, GPIOC, GPIOD or GPIOE;
-  *         (0..10 & 14..15) for GPIOB;
+  *         (0..15) for GPIOA, GPIOB, GPIOC, GPIOD or GPIOE;
   *         (0..2, 4, 6, 9..10) for GPIOF.
   * @param  BitVal: specifies the value to be written to the selected bit.
   *   This parameter can be one of the BitAction enumeration values:

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_rtc.h
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file contains all the functions prototypes for the RTC firmware 
   *          library.
   ******************************************************************************
@@ -101,7 +101,7 @@ typedef struct
 }RTC_DateTypeDef;
 
 /** 
-  * @brief  RTC Alarm structure definition  
+  * @brief  RTC Alarm structure definition        
   */
 typedef struct
 {

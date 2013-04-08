@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_misc.c
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file provides all the miscellaneous firmware functions (add-on
   *          to CMSIS functions).
   *          
@@ -20,33 +20,14 @@
              and subpriority according to the Priority Grouping configuration 
              performed by NVIC_PriorityGroupConfig function.
          
-    ==========================================================================================================================
-      NVIC_PriorityGroup   | NVIC_IRQChannelPreemptionPriority | NVIC_IRQChannelSubPriority  |       Description
-    ==========================================================================================================================
-     NVIC_PriorityGroup_0  |                0                  |            0-15             | 0 bits for pre-emption priority
-                           |                                   |                             | 4 bits for subpriority
-    --------------------------------------------------------------------------------------------------------------------------
-     NVIC_PriorityGroup_1  |                0-1                |            0-7              | 1 bits for pre-emption priority
-                           |                                   |                             | 3 bits for subpriority
-    --------------------------------------------------------------------------------------------------------------------------    
-     NVIC_PriorityGroup_2  |                0-3                |            0-3              | 2 bits for pre-emption priority
-                           |                                   |                             | 2 bits for subpriority
-    --------------------------------------------------------------------------------------------------------------------------    
-     NVIC_PriorityGroup_3  |                0-7                |            0-1              | 3 bits for pre-emption priority
-                           |                                   |                             | 1 bits for subpriority
-    --------------------------------------------------------------------------------------------------------------------------    
-     NVIC_PriorityGroup_4  |                0-15               |            0                | 4 bits for pre-emption priority
-                           |                                   |                             | 0 bits for subpriority                       
-    ==========================================================================================================================     
-
          (#) Enable and Configure the priority of the selected IRQ Channels.
-  
-    -@- When the NVIC_PriorityGroup_0 is selected, it will no any nested interrupt,
+    [..]
+    (@) When the NVIC_PriorityGroup_0 is selected, it will no any nested interrupt,
         the IRQ priority will be managed only by subpriority.
         The sub-priority is only used to sort pending exception priorities, 
         and does not affect active exceptions.
-    -@- Lower priority values gives higher priority.
-    -@- Priority Order:
+    (@) Lower priority values gives higher priority.
+    (@) Priority Order:
         (#@) Lowest Preemption priority.
         (#@) Lowest Subpriority.
         (#@) Lowest hardware priority (IRQn position).

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_misc.h
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file contains all the functions prototypes for the miscellaneous
   *          firmware library functions (add-on to CMSIS functions).
   ******************************************************************************
@@ -60,12 +60,13 @@ typedef struct
 
   uint8_t NVIC_IRQChannelPreemptionPriority;  /*!< Specifies the pre-emption priority for the IRQ channel
                                                    specified in NVIC_IRQChannel. This parameter can be a value
-                                                   between 0 and 15 as described in the table @ref NVIC_Priority_Table
+                                                   between 0 and 15.
                                                    A lower priority value indicates a higher priority */
+                                                   
 
   uint8_t NVIC_IRQChannelSubPriority;         /*!< Specifies the subpriority level for the IRQ channel specified
-                                                   in NVIC_IRQChannel. This parameter can be a value
-                                                   between 0 and 15 as described in the table @ref NVIC_Priority_Table
+                                                   in NVIC_IRQChannel. This parameter can be a value 
+                                                   between 0 and 15.
                                                    A lower priority value indicates a higher priority */
 
   FunctionalState NVIC_IRQChannelCmd;         /*!< Specifies whether the IRQ channel defined in NVIC_IRQChannel
@@ -94,7 +95,7 @@ typedef struct
                          |                                   |                             |   1 bits for subpriority
   ----------------------------------------------------------------------------------------------------------------------------    
    NVIC_PriorityGroup_4  |                0-15               |            0                |   4 bits for pre-emption priority
-                         |                                   |                             |   0 bits for subpriority          
+                         |                                   |                             |   0 bits for subpriority                       
   ============================================================================================================================
 @endverbatim
 */
@@ -163,7 +164,6 @@ typedef struct
   */
 
 /** @defgroup MISC_SysTick_clock_source 
-  * @{
   */
 
 #define SysTick_CLKSource_HCLK_Div8    ((uint32_t)0xFFFFFFFB)

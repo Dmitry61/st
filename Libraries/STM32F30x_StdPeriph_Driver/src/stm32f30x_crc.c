@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_crc.c
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of CRC computation unit peripheral:
   *            + Configuration of the CRC computation unit
@@ -229,7 +229,7 @@ void CRC_SetPolynomial(uint32_t CRC_Pol)
  *
 @verbatim
  ===============================================================================
-                    ##### CRC computation functions #####
+                      ##### CRC computation functions #####
  ===============================================================================
 
 @endverbatim
@@ -317,7 +317,7 @@ uint32_t CRC_GetCRC(void)
 
 /**
   * @brief  Stores an 8-bit data in the Independent Data(ID) register.
-  * @param  CRC_IDValue: 8-bit value to be stored in the ID register           
+  * @param  CRC_IDValue: 8-bit value to be stored in the ID register 					
   * @retval None
   */
 void CRC_SetIDRegister(uint8_t CRC_IDValue)

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_iwdg.c
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the Independent watchdog (IWDG) peripheral:           
   *           + Prescaler and Counter configuration

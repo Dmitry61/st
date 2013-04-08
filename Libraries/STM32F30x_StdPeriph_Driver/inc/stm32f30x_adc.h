@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_adc.h
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file contains all the functions prototypes for the ADC firmware 
   *          library.
   ******************************************************************************
@@ -61,13 +61,12 @@ typedef struct
   uint32_t ADC_ExternalTrigConvEvent;      /*!< Defines the external trigger used to start the analog
                                                to digital conversion of regular channels. This parameter
                                                can be a value of @ref ADC_external_trigger_sources_for_regular_channels_conversion */
-  uint32_t ADC_ExternalTrigEventEdge;      /*!< Select the external trigger edge and
-                                               enable the trigger of a regular group. 
+  uint32_t ADC_ExternalTrigEventEdge;      /*!< Select the external trigger edge and enable the trigger of a regular group.                                               
                                                This parameter can be a value of 
                                                @ref ADC_external_trigger_edge_for_regular_channels_conversion */
   uint32_t ADC_DataAlign;                 /*!< Specifies whether the ADC data alignment is left or right.
                                                This parameter can be a value of @ref ADC_data_align */
-  uint32_t ADC_OverunMode;                /*!< Specifies the way data overrun are managed.
+  uint32_t ADC_OverrunMode;               /*!< Specifies the way data overrun are managed.
                                                This parameter can be set to ENABLE or DISABLE. */
   uint32_t ADC_AutoInjMode;               /*!< Enable/disable automatic injected group conversion after
                                                regular group conversion.
@@ -87,20 +86,19 @@ typedef struct
 {
 
    uint32_t ADC_ExternalTrigInjecConvEvent;     /*!< Defines the external trigger used to start the analog
-                                               to digital conversion of injected channels. This parameter
-                                               can be a value of @ref ADC_external_trigger_sources_for_Injected_channels_conversion */
-  uint32_t ADC_ExternalTrigInjecEventEdge;     /*!< Select the external trigger edge and
-                                               enable the trigger of a injected group. 
-                                               This parameter can be a value of 
-                                               @ref ADC_external_trigger_edge_for_Injected_channels_conversion */
+                                                     to digital conversion of injected channels. This parameter
+                                                     can be a value of @ref ADC_external_trigger_sources_for_Injected_channels_conversion */
+  uint32_t ADC_ExternalTrigInjecEventEdge;     /*!< Select the external trigger edge and enable the trigger of an injected group. 
+                                                    This parameter can be a value of 
+                                                    @ref ADC_external_trigger_edge_for_Injected_channels_conversion */
   uint8_t ADC_NbrOfInjecChannel;               /*!< Specifies the number of ADC channels that will be converted
-                                               using the sequencer for injected channel group.
-                                               This parameter must range from 1 to 4. */ 
+                                                    using the sequencer for injected channel group.
+                                                    This parameter must range from 1 to 4. */ 
   uint32_t ADC_InjecSequence1; 
   uint32_t ADC_InjecSequence2;
   uint32_t ADC_InjecSequence3;
   uint32_t ADC_InjecSequence4;                                            
-}ADC_InjecInitTypeDef;
+}ADC_InjectedInitTypeDef;
 
 /**
   * @}
@@ -109,21 +107,17 @@ typedef struct
 {
   uint32_t ADC_Mode;                      /*!< Configures the ADC to operate in 
                                                independent or multi mode. 
-                                               This parameter can be a value of @ref ADC_Common_mode */
+                                               This parameter can be a value of @ref ADC_mode */                                              
   uint32_t ADC_Clock;                    /*!< Select the clock of the ADC. The clock is common for both master 
                                               and slave ADCs.
-                                               This parameter can be a value of @ref ADC_Clock */
-  uint32_t ADC_DMAAccessMode;             /*!< Configures the Direct memory access 
-                                              mode for multi ADC mode.
+                                              This parameter can be a value of @ref ADC_Clock */
+  uint32_t ADC_DMAAccessMode;             /*!< Configures the Direct memory access mode for multi ADC mode.                                               
                                                This parameter can be a value of 
                                                @ref ADC_Direct_memory_access_mode_for_multi_mode */
-  uint32_t ADC_DMAMode;                  /*!< Configures the Direct memory access 
-                                              mode for multi ADC mode.
-                                               This parameter can be a value of 
-                                               @ref ADC_Direct_memory_access_mode_for_multi_mode */
+  uint32_t ADC_DMAMode;                  /*!< Configures the DMA mode for ADC.                                             
+                                              This parameter can be a value of @ref ADC_DMA_Mode_definition */
   uint8_t ADC_TwoSamplingDelay;          /*!< Configures the Delay between 2 sampling phases.
-                                               This parameter can be a value of 
-                                               @ref ADC_delay_between_2_sampling_phases */
+                                               This parameter can be a value between  0x0 and 0xF  */
   
 }ADC_CommonInitTypeDef;
 
@@ -146,8 +140,8 @@ typedef struct
 /** @defgroup ADC_ContinuousConvMode 
   * @{
   */
-#define ADC_ContinuousConvMode_Enable   ((uint32_t)0x00002000)  /*!<  ADC continous conversion mode enable */
-#define ADC_ContinuousConvMode_Disable   ((uint32_t)0x00000000)  /*!<  ADC continous conversion mode disable */
+#define ADC_ContinuousConvMode_Enable	 ((uint32_t)0x00002000)  /*!<  ADC continuous conversion mode enable */
+#define ADC_ContinuousConvMode_Disable	 ((uint32_t)0x00000000)  /*!<  ADC continuous conversion mode disable */
 #define IS_ADC_CONVMODE(MODE) (((MODE) == ADC_ContinuousConvMode_Enable) || \
                                ((MODE) == ADC_ContinuousConvMode_Disable))
 /**
@@ -156,18 +150,18 @@ typedef struct
 /** @defgroup ADC_OverunMode 
   * @{
   */
-#define ADC_OverunMode_Enable   ((uint32_t)0x00001000)  /*!<  ADC Overun Mode enable */
-#define ADC_OverunMode_Disable   ((uint32_t)0x00000000)  /*!<  ADC Overun Mode disable */
-#define IS_ADC_OVRUNMODE(MODE) (((MODE) == ADC_OverunMode_Enable) || \
-                                ((MODE) == ADC_OverunMode_Disable))
+#define ADC_OverrunMode_Enable	 ((uint32_t)0x00001000)  /*!<  ADC Overrun Mode enable */
+#define ADC_OverrunMode_Disable	 ((uint32_t)0x00000000)  /*!<  ADC Overrun Mode disable */
+#define IS_ADC_OVRUNMODE(MODE) (((MODE) == ADC_OverrunMode_Enable) || \
+                                ((MODE) == ADC_OverrunMode_Disable))
 /**
   * @}
   */
 /** @defgroup ADC_AutoInjecMode 
   * @{
   */
-#define ADC_AutoInjec_Enable   ((uint32_t)0x02000000)  /*!<  ADC Auto injected Mode enable */
-#define ADC_AutoInjec_Disable   ((uint32_t)0x00000000)  /*!<  ADC Auto injected Mode disable */
+#define ADC_AutoInjec_Enable	 ((uint32_t)0x02000000)  /*!<  ADC Auto injected Mode enable */
+#define ADC_AutoInjec_Disable	 ((uint32_t)0x00000000)  /*!<  ADC Auto injected Mode disable */
 #define IS_ADC_AUTOINJECMODE(MODE) (((MODE) == ADC_AutoInjec_Enable) || \
                                     ((MODE) == ADC_AutoInjec_Disable))
 /**
@@ -188,105 +182,116 @@ typedef struct
 /**
   * @}
   */ 
+  
+  
+/** @defgroup ADC_external_trigger_edge_for_regular_channels_conversion 
+  * @{
+  */
+#define ADC_ExternalTrigEventEdge_None            ((uint16_t)0x0000)     /*!<  ADC No external trigger for regular conversion */
+#define ADC_ExternalTrigEventEdge_RisingEdge      ((uint16_t)0x0400)     /*!<  ADC external trigger rising edge for regular conversion */
+#define ADC_ExternalTrigEventEdge_FallingEdge     ((uint16_t)0x0800)     /*!<  ADC ADC external trigger falling edge for regular conversion */
+#define ADC_ExternalTrigEventEdge_BothEdge        ((uint16_t)0x0C00)     /*!<  ADC ADC external trigger both edges for regular conversion */
 
-#define ADC_ExternalTrigConvEdge_None         ((uint16_t)0x0000)     /*!<  ADC No external trigger for regular conversion */
-#define ADC_ExternalTrigConvEdge_RisingEdge       ((uint16_t)0x0400)     /*!<  ADC external trigger rising edge for regular conversion */
-#define ADC_ExternalTrigConvEdge_FallingEdge   ((uint16_t)0x0800)     /*!<  ADC ADC external trigger falling edge for regular conversion */
-#define ADC_ExternalTrigConvEdge_BothEdge       ((uint16_t)0x0C00)     /*!<  ADC ADC external trigger both edges for regular conversion */
+#define IS_EXTERNALTRIG_EDGE(EDGE) (((EDGE) == ADC_ExternalTrigEventEdge_None) || \
+                                    ((EDGE) == ADC_ExternalTrigEventEdge_RisingEdge) || \
+                                    ((EDGE) == ADC_ExternalTrigEventEdge_FallingEdge) || \
+                                    ((EDGE) == ADC_ExternalTrigEventEdge_BothEdge))
+  
+/**
+  * @}
+  */
+   
+/** @defgroup ADC_external_trigger_edge_for_Injected_channels_conversion 
+  * @{
+  */     
+#define ADC_ExternalTrigInjecEventEdge_None		     ((uint16_t)0x0000)    /*!<  ADC No external trigger for regular conversion */
+#define ADC_ExternalTrigInjecEventEdge_RisingEdge	 ((uint16_t)0x0040)    /*!<  ADC external trigger rising edge for injected conversion */
+#define ADC_ExternalTrigInjecEventEdge_FallingEdge	 ((uint16_t)0x0080)  /*!<  ADC external trigger falling edge for injected conversion */
+#define ADC_ExternalTrigInjecEventEdge_BothEdge	     ((uint16_t)0x00C0)  /*!<  ADC external trigger both edges for injected conversion */
 
-#define IS_EXTERNALTRIG_EDGE(EDGE) (((EDGE) == ADC_ExternalTrigConvEdge_None) || \
-                                    ((EDGE) == ADC_ExternalTrigConvEdge_RisingEdge) || \
-                                    ((EDGE) == ADC_ExternalTrigConvEdge_FallingEdge) || \
-                                    ((EDGE) == ADC_ExternalTrigConvEdge_BothEdge))
-
-#define ADC_ExternalTrigInjecConvEdge_None         ((uint16_t)0x0000)    /*!<  ADC No external trigger for regular conversion */
-#define ADC_ExternalTrigInjecConvEdge_RisingEdge   ((uint16_t)0x0040)    /*!<  ADC external trigger rising edge for injected conversion */
-#define ADC_ExternalTrigInjecConvEdge_FallingEdge   ((uint16_t)0x0080)    /*!<  ADC external trigger falling edge for injected conversion */
-#define ADC_ExternalTrigInjecConvEdge_BothEdge       ((uint16_t)0x00C0)    /*!<  ADC external trigger both edges for injected conversion */
-
-#define IS_EXTERNALTRIGINJ_EDGE(EDGE) (((EDGE) == ADC_ExternalTrigInjecConvEdge_None) || \
-                                       ((EDGE) == ADC_ExternalTrigInjecConvEdge_RisingEdge) || \
-                                       ((EDGE) == ADC_ExternalTrigInjecConvEdge_FallingEdge) || \
-                                       ((EDGE) == ADC_ExternalTrigInjecConvEdge_BothEdge))
-
+#define IS_EXTERNALTRIGINJ_EDGE(EDGE) (((EDGE) == ADC_ExternalTrigInjecEventEdge_None) || \
+                                       ((EDGE) == ADC_ExternalTrigInjecEventEdge_RisingEdge) || \
+                                       ((EDGE) == ADC_ExternalTrigInjecEventEdge_FallingEdge) || \
+                                       ((EDGE) == ADC_ExternalTrigInjecEventEdge_BothEdge))
+  
 /** @defgroup ADC_external_trigger_sources_for_regular_channels_conversion 
   * @{
   */
+#define ADC_ExternalTrigConvEvent_0              ((uint16_t)0x0000)   /*!<  ADC external trigger event 0 */
+#define ADC_ExternalTrigConvEvent_1              ((uint16_t)0x0040)   /*!<  ADC external trigger event 1 */
+#define ADC_ExternalTrigConvEvent_2              ((uint16_t)0x0080)   /*!<  ADC external trigger event 2 */
+#define ADC_ExternalTrigConvEvent_3              ((uint16_t)0x00C0)   /*!<  ADC external trigger event 3 */
+#define ADC_ExternalTrigConvEvent_4              ((uint16_t)0x0100)   /*!<  ADC external trigger event 4 */
+#define ADC_ExternalTrigConvEvent_5              ((uint16_t)0x0140)   /*!<  ADC external trigger event 5 */
+#define ADC_ExternalTrigConvEvent_6              ((uint16_t)0x0180)   /*!<  ADC external trigger event 6 */
+#define ADC_ExternalTrigConvEvent_7              ((uint16_t)0x01C0)   /*!<  ADC external trigger event 7 */
+#define ADC_ExternalTrigConvEvent_8              ((uint16_t)0x0200)   /*!<  ADC external trigger event 8 */
+#define ADC_ExternalTrigConvEvent_9              ((uint16_t)0x0240)   /*!<  ADC external trigger event 9 */
+#define ADC_ExternalTrigConvEvent_10             ((uint16_t)0x0280)   /*!<  ADC external trigger event 10 */
+#define ADC_ExternalTrigConvEvent_11             ((uint16_t)0x02C0)   /*!<  ADC external trigger event 11 */
+#define ADC_ExternalTrigConvEvent_12             ((uint16_t)0x0300)   /*!<  ADC external trigger event 12 */
+#define ADC_ExternalTrigConvEvent_13             ((uint16_t)0x0340)   /*!<  ADC external trigger event 13 */
+#define ADC_ExternalTrigConvEvent_14             ((uint16_t)0x0380)   /*!<  ADC external trigger event 14 */
+#define ADC_ExternalTrigConvEvent_15             ((uint16_t)0x03C0)   /*!<  ADC external trigger event 15 */
 
-#define ADC_ExternalTrigConv_Event0              ((uint16_t)0x0000)   /*!<  ADC external trigger event 0 */
-#define ADC_ExternalTrigConv_Event1              ((uint16_t)0x0040)   /*!<  ADC external trigger event 1 */
-#define ADC_ExternalTrigConv_Event2              ((uint16_t)0x0080)   /*!<  ADC external trigger event 2 */
-#define ADC_ExternalTrigConv_Event3              ((uint16_t)0x00C0)   /*!<  ADC external trigger event 3 */
-#define ADC_ExternalTrigConv_Event4              ((uint16_t)0x0100)   /*!<  ADC external trigger event 4 */
-#define ADC_ExternalTrigConv_Event5              ((uint16_t)0x0140)   /*!<  ADC external trigger event 5 */
-#define ADC_ExternalTrigConv_Event6              ((uint16_t)0x0180)   /*!<  ADC external trigger event 6 */
-#define ADC_ExternalTrigConv_Event7              ((uint16_t)0x01C0)   /*!<  ADC external trigger event 7 */
-#define ADC_ExternalTrigConv_Event8              ((uint16_t)0x0200)   /*!<  ADC external trigger event 8 */
-#define ADC_ExternalTrigConv_Event9              ((uint16_t)0x0240)   /*!<  ADC external trigger event 9 */
-#define ADC_ExternalTrigConv_Event10             ((uint16_t)0x0280)   /*!<  ADC external trigger event 10 */
-#define ADC_ExternalTrigConv_Event11             ((uint16_t)0x02C0)   /*!<  ADC external trigger event 11 */
-#define ADC_ExternalTrigConv_Event12             ((uint16_t)0x0300)   /*!<  ADC external trigger event 12 */
-#define ADC_ExternalTrigConv_Event13             ((uint16_t)0x0340)   /*!<  ADC external trigger event 13 */
-#define ADC_ExternalTrigConv_Event14             ((uint16_t)0x0380)   /*!<  ADC external trigger event 14 */
-#define ADC_ExternalTrigConv_Event15             ((uint16_t)0x03C0)   /*!<  ADC external trigger event 15 */
-
-#define IS_ADC_EXT_TRIG(REGTRIG) (((REGTRIG) == ADC_ExternalTrigConv_Event0) || \
-                                  ((REGTRIG) == ADC_ExternalTrigConv_Event1) || \
-                                  ((REGTRIG) == ADC_ExternalTrigConv_Event2) || \
-                                  ((REGTRIG) == ADC_ExternalTrigConv_Event3) || \
-                                  ((REGTRIG) == ADC_ExternalTrigConv_Event4) || \
-                                  ((REGTRIG) == ADC_ExternalTrigConv_Event5) || \
-                                  ((REGTRIG) == ADC_ExternalTrigConv_Event6) || \
-                                  ((REGTRIG) == ADC_ExternalTrigConv_Event7) || \
-                  ((REGTRIG) == ADC_ExternalTrigConv_Event8) || \
-                                  ((REGTRIG) == ADC_ExternalTrigConv_Event9) || \
-                                  ((REGTRIG) == ADC_ExternalTrigConv_Event10) || \
-                                  ((REGTRIG) == ADC_ExternalTrigConv_Event11) || \
-                                  ((REGTRIG) == ADC_ExternalTrigConv_Event12) || \
-                                  ((REGTRIG) == ADC_ExternalTrigConv_Event13) || \
-                                  ((REGTRIG) == ADC_ExternalTrigConv_Event14) || \
-                                  ((REGTRIG) == ADC_ExternalTrigConv_Event15))
+#define IS_ADC_EXT_TRIG(REGTRIG) (((REGTRIG) == ADC_ExternalTrigConvEvent_0) || \
+                                  ((REGTRIG) == ADC_ExternalTrigConvEvent_1) || \
+                                  ((REGTRIG) == ADC_ExternalTrigConvEvent_2) || \
+                                  ((REGTRIG) == ADC_ExternalTrigConvEvent_3) || \
+                                  ((REGTRIG) == ADC_ExternalTrigConvEvent_4) || \
+                                  ((REGTRIG) == ADC_ExternalTrigConvEvent_5) || \
+                                  ((REGTRIG) == ADC_ExternalTrigConvEvent_6) || \
+                                  ((REGTRIG) == ADC_ExternalTrigConvEvent_7) || \
+                                  ((REGTRIG) == ADC_ExternalTrigConvEvent_8) || \
+                                  ((REGTRIG) == ADC_ExternalTrigConvEvent_9) || \
+                                  ((REGTRIG) == ADC_ExternalTrigConvEvent_10) || \
+                                  ((REGTRIG) == ADC_ExternalTrigConvEvent_11) || \
+                                  ((REGTRIG) == ADC_ExternalTrigConvEvent_12) || \
+                                  ((REGTRIG) == ADC_ExternalTrigConvEvent_13) || \
+                                  ((REGTRIG) == ADC_ExternalTrigConvEvent_14) || \
+                                  ((REGTRIG) == ADC_ExternalTrigConvEvent_15))
 
 /**
   * @}
   */
-/** @defgroup ADC_external_trigger_sources_for_injected_channels_conversion 
+
+/** @defgroup ADC_external_trigger_sources_for_Injected_channels_conversion 
   * @{
   */
+        
+#define ADC_ExternalTrigInjecConvEvent_0              ((uint16_t)0x0000)  /*!<  ADC external trigger for injected conversion event 0 */
+#define ADC_ExternalTrigInjecConvEvent_1              ((uint16_t)0x0004)  /*!<  ADC external trigger for injected conversion event 1 */
+#define ADC_ExternalTrigInjecConvEvent_2              ((uint16_t)0x0008)  /*!<  ADC external trigger for injected conversion event 2 */
+#define ADC_ExternalTrigInjecConvEvent_3              ((uint16_t)0x000C)  /*!<  ADC external trigger for injected conversion event 3 */
+#define ADC_ExternalTrigInjecConvEvent_4              ((uint16_t)0x0010)  /*!<  ADC external trigger for injected conversion event 4 */
+#define ADC_ExternalTrigInjecConvEvent_5              ((uint16_t)0x0014)  /*!<  ADC external trigger for injected conversion event 5 */
+#define ADC_ExternalTrigInjecConvEvent_6              ((uint16_t)0x0018)  /*!<  ADC external trigger for injected conversion event 6 */
+#define ADC_ExternalTrigInjecConvEvent_7              ((uint16_t)0x001C)  /*!<  ADC external trigger for injected conversion event 7 */
+#define ADC_ExternalTrigInjecConvEvent_8              ((uint16_t)0x0020)  /*!<  ADC external trigger for injected conversion event 8 */
+#define ADC_ExternalTrigInjecConvEvent_9              ((uint16_t)0x0024)  /*!<  ADC external trigger for injected conversion event 9 */
+#define ADC_ExternalTrigInjecConvEvent_10             ((uint16_t)0x0028)  /*!<  ADC external trigger for injected conversion event 10 */
+#define ADC_ExternalTrigInjecConvEvent_11             ((uint16_t)0x002C)  /*!<  ADC external trigger for injected conversion event 11 */
+#define ADC_ExternalTrigInjecConvEvent_12             ((uint16_t)0x0030)  /*!<  ADC external trigger for injected conversion event 12 */
+#define ADC_ExternalTrigInjecConvEvent_13             ((uint16_t)0x0034)  /*!<  ADC external trigger for injected conversion event 13 */
+#define ADC_ExternalTrigInjecConvEvent_14             ((uint16_t)0x0038)  /*!<  ADC external trigger for injected conversion event 14 */
+#define ADC_ExternalTrigInjecConvEvent_15             ((uint16_t)0x003C)  /*!<  ADC external trigger for injected conversion event 15 */
 
-#define ADC_ExternalTrigInjecConv_Event0              ((uint16_t)0x0000)  /*!<  ADC external trigger for injected conversion event 0 */
-#define ADC_ExternalTrigInjecConv_Event1              ((uint16_t)0x0004)  /*!<  ADC external trigger for injected conversion event 1 */
-#define ADC_ExternalTrigInjecConv_Event2              ((uint16_t)0x0008)  /*!<  ADC external trigger for injected conversion event 2 */
-#define ADC_ExternalTrigInjecConv_Event3              ((uint16_t)0x000C)  /*!<  ADC external trigger for injected conversion event 3 */
-#define ADC_ExternalTrigInjecConv_Event4              ((uint16_t)0x0010)  /*!<  ADC external trigger for injected conversion event 4 */
-#define ADC_ExternalTrigInjecConv_Event5              ((uint16_t)0x0014)  /*!<  ADC external trigger for injected conversion event 5 */
-#define ADC_ExternalTrigInjecConv_Event6              ((uint16_t)0x0018)  /*!<  ADC external trigger for injected conversion event 6 */
-#define ADC_ExternalTrigInjecConv_Event7              ((uint16_t)0x001C)  /*!<  ADC external trigger for injected conversion event 7 */
-#define ADC_ExternalTrigInjecConv_Event8              ((uint16_t)0x0020)  /*!<  ADC external trigger for injected conversion event 8 */
-#define ADC_ExternalTrigInjecConv_Event9              ((uint16_t)0x0024)  /*!<  ADC external trigger for injected conversion event 9 */
-#define ADC_ExternalTrigInjecConv_Event10             ((uint16_t)0x0028)  /*!<  ADC external trigger for injected conversion event 10 */
-#define ADC_ExternalTrigInjecConv_Event11             ((uint16_t)0x002C)  /*!<  ADC external trigger for injected conversion event 11 */
-#define ADC_ExternalTrigInjecConv_Event12             ((uint16_t)0x0030)  /*!<  ADC external trigger for injected conversion event 12 */
-#define ADC_ExternalTrigInjecConv_Event13             ((uint16_t)0x0034)  /*!<  ADC external trigger for injected conversion event 13 */
-#define ADC_ExternalTrigInjecConv_Event14             ((uint16_t)0x0038)  /*!<  ADC external trigger for injected conversion event 14 */
-#define ADC_ExternalTrigInjecConv_Event15             ((uint16_t)0x003C)  /*!<  ADC external trigger for injected conversion event 15 */
-
-#define IS_ADC_EXT_INJEC_TRIG(INJTRIG) (((INJTRIG) == ADC_ExternalTrigInjecConv_Event0) || \
-                                        ((INJTRIG) == ADC_ExternalTrigInjecConv_Event1) || \
-                                        ((INJTRIG) == ADC_ExternalTrigInjecConv_Event2) || \
-                                        ((INJTRIG) == ADC_ExternalTrigInjecConv_Event3) || \
-                                        ((INJTRIG) == ADC_ExternalTrigInjecConv_Event4) || \
-                                        ((INJTRIG) == ADC_ExternalTrigInjecConv_Event5) || \
-                                        ((INJTRIG) == ADC_ExternalTrigInjecConv_Event6) || \
-                                        ((INJTRIG) == ADC_ExternalTrigInjecConv_Event7) || \
-                        ((INJTRIG) == ADC_ExternalTrigInjecConv_Event8) || \
-                                        ((INJTRIG) == ADC_ExternalTrigInjecConv_Event9) || \
-                                        ((INJTRIG) == ADC_ExternalTrigInjecConv_Event10) || \
-                                        ((INJTRIG) == ADC_ExternalTrigInjecConv_Event11) || \
-                                        ((INJTRIG) == ADC_ExternalTrigInjecConv_Event12) || \
-                                        ((INJTRIG) == ADC_ExternalTrigInjecConv_Event13) || \
-                                        ((INJTRIG) == ADC_ExternalTrigInjecConv_Event14) || \
-                                        ((INJTRIG) == ADC_ExternalTrigInjecConv_Event15))
+#define IS_ADC_EXT_INJEC_TRIG(INJTRIG) (((INJTRIG) == ADC_ExternalTrigInjecConvEvent_0) || \
+                                        ((INJTRIG) == ADC_ExternalTrigInjecConvEvent_1) || \
+                                        ((INJTRIG) == ADC_ExternalTrigInjecConvEvent_2) || \
+                                        ((INJTRIG) == ADC_ExternalTrigInjecConvEvent_3) || \
+                                        ((INJTRIG) == ADC_ExternalTrigInjecConvEvent_4) || \
+                                        ((INJTRIG) == ADC_ExternalTrigInjecConvEvent_5) || \
+                                        ((INJTRIG) == ADC_ExternalTrigInjecConvEvent_6) || \
+                                        ((INJTRIG) == ADC_ExternalTrigInjecConvEvent_7) || \
+                                        ((INJTRIG) == ADC_ExternalTrigInjecConvEvent_8) || \
+                                        ((INJTRIG) == ADC_ExternalTrigInjecConvEvent_9) || \
+                                        ((INJTRIG) == ADC_ExternalTrigInjecConvEvent_10) || \
+                                        ((INJTRIG) == ADC_ExternalTrigInjecConvEvent_11) || \
+                                        ((INJTRIG) == ADC_ExternalTrigInjecConvEvent_12) || \
+                                        ((INJTRIG) == ADC_ExternalTrigInjecConvEvent_13) || \
+                                        ((INJTRIG) == ADC_ExternalTrigInjecConvEvent_14) || \
+                                        ((INJTRIG) == ADC_ExternalTrigInjecConvEvent_15))
 /**
   * @}
   */
@@ -326,8 +331,8 @@ typedef struct
 #define ADC_Channel_18                              ((uint8_t)0x12)    /*!<  ADC Channel 18 */
 
 #define ADC_Channel_TempSensor                      ((uint8_t)ADC_Channel_16)
-#define ADC_Channel_Vrefint                         ((uint8_t)ADC_Channel_17)
-#define ADC_Channel_Vbat                            ((uint8_t)ADC_Channel_18)
+#define ADC_Channel_Vrefint                         ((uint8_t)ADC_Channel_18)
+#define ADC_Channel_Vbat                            ((uint8_t)ADC_Channel_17)
 
 #define IS_ADC_CHANNEL(CHANNEL) (((CHANNEL) == ADC_Channel_1)  || \
                                  ((CHANNEL) == ADC_Channel_2)  || \
@@ -367,38 +372,38 @@ typedef struct
 
 /** @defgroup ADC_mode 
   * @{
-  */ 
-#define ADC_IndependentMode                  ((uint32_t)0x00000000) /*!<  ADC independent mode */
-#define ADC_CombRegSimulInjSimulMode         ((uint32_t)0x00000001) /*!<  ADC multi ADC mode: Combined Regular simultaneous injected simultaneous mode */
-#define ADC_CombRegSimulAltTrigMode          ((uint32_t)0x00000002) /*!<  ADC multi ADC mode: Combined Regular simultaneous Alternate trigger mode */
-#define ADC_InjSimulMode                     ((uint32_t)0x00000005) /*!<  ADC multi ADC mode: Injected simultaneous mode */
-#define ADC_RegSimulMode                     ((uint32_t)0x00000006) /*!<  ADC multi ADC mode: Regular simultaneous mode */
-#define ADC_InterleaveMode                   ((uint32_t)0x00000007) /*!<  ADC multi ADC mode: Interleave mode */
-#define ADC_AltTrigMode                      ((uint32_t)0x00000009) /*!<  ADC multi ADC mode: Alternate Trigger mode */
+  */    
+#define ADC_Mode_Independent                  ((uint32_t)0x00000000) /*!<  ADC independent mode */
+#define ADC_Mode_CombRegSimulInjSimul         ((uint32_t)0x00000001) /*!<  ADC multi ADC mode: Combined Regular simultaneous injected simultaneous mode */
+#define ADC_Mode_CombRegSimulAltTrig          ((uint32_t)0x00000002) /*!<  ADC multi ADC mode: Combined Regular simultaneous Alternate trigger mode */
+#define ADC_Mode_InjSimul                     ((uint32_t)0x00000005) /*!<  ADC multi ADC mode: Injected simultaneous mode */
+#define ADC_Mode_RegSimul                     ((uint32_t)0x00000006) /*!<  ADC multi ADC mode: Regular simultaneous mode */
+#define ADC_Mode_Interleave                   ((uint32_t)0x00000007) /*!<  ADC multi ADC mode: Interleave mode */
+#define ADC_Mode_AltTrig                      ((uint32_t)0x00000009) /*!<  ADC multi ADC mode: Alternate Trigger mode */
 
-#define IS_ADC_MODE(MODE) (((MODE) == ADC_IndependentMode) || \
-                           ((MODE) == ADC_CombRegSimulInjSimulMode) || \
-                           ((MODE) == ADC_CombRegSimulAltTrigMode) || \
-                           ((MODE) == ADC_InjSimulMode) || \
-                           ((MODE) == ADC_RegSimulMode) || \
-                           ((MODE) == ADC_InterleaveMode) || \
-                           ((MODE) == ADC_AltTrigMode))
+#define IS_ADC_MODE(MODE) (((MODE) == ADC_Mode_Independent) || \
+                           ((MODE) == ADC_Mode_CombRegSimulInjSimul) || \
+                           ((MODE) == ADC_Mode_CombRegSimulAltTrig) || \
+                           ((MODE) == ADC_Mode_InjSimul) || \
+                           ((MODE) == ADC_Mode_RegSimul) || \
+                           ((MODE) == ADC_Mode_Interleave) || \
+                           ((MODE) == ADC_Mode_AltTrig))
                                      
 /**
   * @}
   */
 
-/** @defgroup ADC_mode 
+/** @defgroup ADC_Clock 
   * @{
   */ 
-#define ADC_AsynClkMode                  ((uint32_t)0x00000000)   /*!< ADC Asynchronous clock mode */
-#define ADC_SynClkModeDiv1               ((uint32_t)0x00010000)   /*!< Synchronous clock mode divided by 1 */
-#define ADC_SynClkModeDiv2               ((uint32_t)0x00020000)   /*!<  Synchronous clock mode divided by 2 */
-#define ADC_SynClkModeDiv4               ((uint32_t)0x00030000)   /*!<  Synchronous clock mode divided by 4 */
-#define IS_ADC_CLOCKMODE(CLOCK) (((CLOCK) == ADC_AsynClkMode) ||\
-                 ((CLOCK) == ADC_SynClkModeDiv1) ||\
-                 ((CLOCK) == ADC_SynClkModeDiv2)||\
-                 ((CLOCK) == ADC_SynClkModeDiv4))
+#define ADC_Clock_AsynClkMode                  ((uint32_t)0x00000000)   /*!< ADC Asynchronous clock mode */
+#define ADC_Clock_SynClkModeDiv1               ((uint32_t)0x00010000)   /*!< Synchronous clock mode divided by 1 */
+#define ADC_Clock_SynClkModeDiv2               ((uint32_t)0x00020000)   /*!<  Synchronous clock mode divided by 2 */
+#define ADC_Clock_SynClkModeDiv4               ((uint32_t)0x00030000)   /*!<  Synchronous clock mode divided by 4 */
+#define IS_ADC_CLOCKMODE(CLOCK) (((CLOCK) == ADC_Clock_AsynClkMode) ||\
+				((CLOCK) == ADC_Clock_SynClkModeDiv1) ||\
+				((CLOCK) == ADC_Clock_SynClkModeDiv2)||\
+				((CLOCK) == ADC_Clock_SynClkModeDiv4))
 /**
   * @}
   */
@@ -439,7 +444,7 @@ typedef struct
   * @}
   */
 
-/** @defgroup ADC_injected_channel_selection 
+/** @defgroup ADC_injected_Channel_selection 
   * @{
   */
 
@@ -447,10 +452,55 @@ typedef struct
 #define ADC_InjectedChannel_2                       ADC_Channel_2        /*!<  ADC Injected channel 2 */
 #define ADC_InjectedChannel_3                       ADC_Channel_3        /*!<  ADC Injected channel 3 */
 #define ADC_InjectedChannel_4                       ADC_Channel_4        /*!<  ADC Injected channel 4 */
+#define ADC_InjectedChannel_5                       ADC_Channel_5        /*!<  ADC Injected channel 5 */
+#define ADC_InjectedChannel_6                       ADC_Channel_6        /*!<  ADC Injected channel 6 */
+#define ADC_InjectedChannel_7                       ADC_Channel_7        /*!<  ADC Injected channel 7 */
+#define ADC_InjectedChannel_8                       ADC_Channel_8        /*!<  ADC Injected channel 8 */
+#define ADC_InjectedChannel_9                       ADC_Channel_9        /*!<  ADC Injected channel 9 */
+#define ADC_InjectedChannel_10                      ADC_Channel_10       /*!<  ADC Injected channel 10 */
+#define ADC_InjectedChannel_11                      ADC_Channel_11       /*!<  ADC Injected channel 11 */
+#define ADC_InjectedChannel_12                      ADC_Channel_12       /*!<  ADC Injected channel 12 */
+#define ADC_InjectedChannel_13                      ADC_Channel_13       /*!<  ADC Injected channel 13 */
+#define ADC_InjectedChannel_14                      ADC_Channel_14       /*!<  ADC Injected channel 14 */
+#define ADC_InjectedChannel_15                      ADC_Channel_15       /*!<  ADC Injected channel 15 */
+#define ADC_InjectedChannel_16                      ADC_Channel_16       /*!<  ADC Injected channel 16 */
+#define ADC_InjectedChannel_17                      ADC_Channel_17       /*!<  ADC Injected channel 17 */
+#define ADC_InjectedChannel_18                      ADC_Channel_18       /*!<  ADC Injected channel 18 */
+
 #define IS_ADC_INJECTED_CHANNEL(CHANNEL) (((CHANNEL) == ADC_InjectedChannel_1) || \
                                           ((CHANNEL) == ADC_InjectedChannel_2) || \
                                           ((CHANNEL) == ADC_InjectedChannel_3) || \
-                                          ((CHANNEL) == ADC_InjectedChannel_4))
+                                          ((CHANNEL) == ADC_InjectedChannel_4) ||\
+                                          ((CHANNEL) == ADC_InjectedChannel_5) ||\
+                                          ((CHANNEL) == ADC_InjectedChannel_6) ||\
+                                          ((CHANNEL) == ADC_InjectedChannel_7) ||\
+                                          ((CHANNEL) == ADC_InjectedChannel_8) ||\
+                                          ((CHANNEL) == ADC_InjectedChannel_9) ||\
+                                          ((CHANNEL) == ADC_InjectedChannel_10) ||\
+                                          ((CHANNEL) == ADC_InjectedChannel_11) ||\
+                                          ((CHANNEL) == ADC_InjectedChannel_12) ||\
+                                          ((CHANNEL) == ADC_InjectedChannel_13) ||\
+                                          ((CHANNEL) == ADC_InjectedChannel_14) ||\
+                                          ((CHANNEL) == ADC_InjectedChannel_15) ||\
+                                          ((CHANNEL) == ADC_InjectedChannel_16) ||\
+                                          ((CHANNEL) == ADC_InjectedChannel_17) ||\
+                                          ((CHANNEL) == ADC_InjectedChannel_18))
+/**
+  * @}
+  */
+
+/** @defgroup ADC_injected_Sequence_selection 
+  * @{
+  */
+
+#define ADC_InjectedSequence_1                       ADC_Channel_1        /*!<  ADC Injected sequence 1 */
+#define ADC_InjectedSequence_2                       ADC_Channel_2        /*!<  ADC Injected sequence 2 */
+#define ADC_InjectedSequence_3                       ADC_Channel_3        /*!<  ADC Injected sequence 3 */
+#define ADC_InjectedSequence_4                       ADC_Channel_4        /*!<  ADC Injected sequence 4 */
+#define IS_ADC_INJECTED_SEQUENCE(SEQUENCE) (((SEQUENCE) == ADC_InjectedSequence_1) || \
+                                            ((SEQUENCE) == ADC_InjectedSequence_2) || \
+                                            ((SEQUENCE) == ADC_InjectedSequence_3) || \
+                                            ((SEQUENCE) == ADC_InjectedSequence_4))
 /**
   * @}
   */
@@ -459,13 +509,13 @@ typedef struct
   * @{
   */
 
-#define ADC_AnalogWatchdog_SingleRegEnable         ((uint32_t)0x00C00000)  /*!<  ADC Analog watchdog single regular mode */
-#define ADC_AnalogWatchdog_SingleInjecEnable       ((uint32_t)0x01400000)  /*!<  ADC Analog watchdog single injected mode */
-#define ADC_AnalogWatchdog_SingleRegOrInjecEnable  ((uint32_t)0x01C00000)  /*!<  ADC Analog watchdog single regular or injected mode */
-#define ADC_AnalogWatchdog_AllRegEnable            ((uint32_t)0x00800000)   /*!<  ADC Analog watchdog all regular mode */
-#define ADC_AnalogWatchdog_AllInjecEnable          ((uint32_t)0x01000000)  /*!<  ADC Analog watchdog all injected mode */
-#define ADC_AnalogWatchdog_AllRegAllInjecEnable    ((uint32_t)0x01800000)   /*!<  ADC Analog watchdog all regular and all injected mode */
-#define ADC_AnalogWatchdog_None                    ((uint32_t)0x00000000)  /*!<  ADC Analog watchdog off */
+#define ADC_AnalogWatchdog_SingleRegEnable         ((uint32_t)0x00C00000)    /*!<  ADC Analog watchdog single regular mode */
+#define ADC_AnalogWatchdog_SingleInjecEnable       ((uint32_t)0x01400000)    /*!<  ADC Analog watchdog single injected mode */
+#define ADC_AnalogWatchdog_SingleRegOrInjecEnable  ((uint32_t)0x01C00000)    /*!<  ADC Analog watchdog single regular or injected mode */
+#define ADC_AnalogWatchdog_AllRegEnable            ((uint32_t)0x00800000)    /*!<  ADC Analog watchdog all regular mode */
+#define ADC_AnalogWatchdog_AllInjecEnable          ((uint32_t)0x01000000)    /*!<  ADC Analog watchdog all injected mode */
+#define ADC_AnalogWatchdog_AllRegAllInjecEnable    ((uint32_t)0x01800000)    /*!<  ADC Analog watchdog all regular and all injected mode */
+#define ADC_AnalogWatchdog_None                    ((uint32_t)0x00000000)    /*!<  ADC Analog watchdog off */
 
 #define IS_ADC_ANALOG_WATCHDOG(WATCHDOG) (((WATCHDOG) == ADC_AnalogWatchdog_SingleRegEnable) || \
                                           ((WATCHDOG) == ADC_AnalogWatchdog_SingleInjecEnable) || \
@@ -493,7 +543,7 @@ typedef struct
 /** @defgroup ADC_DMA_Mode_definition 
   * @{
   */
-#define ADC_DMAMode_OneShot     ((uint32_t)0x00000000)   /*!<  ADC DMA Oneshot mode */
+#define ADC_DMAMode_OneShot	   ((uint32_t)0x00000000)   /*!<  ADC DMA Oneshot mode */
 #define ADC_DMAMode_Circular   ((uint32_t)0x00000002)   /*!<  ADC DMA circular mode */
 
 #define IS_ADC_DMA_MODE(MODE) (((MODE) == ADC_DMAMode_OneShot) || ((MODE) == ADC_DMAMode_Circular))
@@ -592,7 +642,7 @@ typedef struct
                                      ((FLAG) == ADC_FLAG_MSTJEOS) || ((FLAG) == ADC_FLAG_MSTAWD1) || \
                                      ((FLAG) == ADC_FLAG_MSTAWD2) || ((FLAG) == ADC_FLAG_MSTAWD3) || \
                                      ((FLAG) == ADC_FLAG_MSTJQOVF) || \
-                   ((FLAG) == ADC_FLAG_SLVRDY) || ((FLAG) == ADC_FLAG_SLVEOSMP) || \
+                                     ((FLAG) == ADC_FLAG_SLVRDY) || ((FLAG) == ADC_FLAG_SLVEOSMP) || \
                                      ((FLAG) == ADC_FLAG_SLVEOC) || ((FLAG) == ADC_FLAG_SLVEOS) || \
                                      ((FLAG) == ADC_FLAG_SLVOVR) || ((FLAG) == ADC_FLAG_SLVEOS) || \
                                      ((FLAG) == ADC_FLAG_SLVJEOS) || ((FLAG) == ADC_FLAG_SLVAWD1) || \
@@ -606,7 +656,7 @@ typedef struct
   * @{
   */
 
-#define IS_ADC_THRESHOLD(THRESHOLD) ((THRESHOLD) <= 0xFFF)    
+#define IS_ADC_THRESHOLD(THRESHOLD) ((THRESHOLD) <= 0xFFF)  
 
 /**
   * @}
@@ -616,7 +666,7 @@ typedef struct
   * @{
   */
 
-#define IS_ADC_OFFSET(OFFSET) ((OFFSET) <= 0xFFF)     
+#define IS_ADC_OFFSET(OFFSET) ((OFFSET) <= 0xFFF)   
 
 /**
   * @}
@@ -626,7 +676,7 @@ typedef struct
   * @{
   */
 
-#define IS_ADC_INJECTED_LENGTH(LENGTH) (((LENGTH) >= 0x1) && ((LENGTH) <= 0x4))  
+#define IS_ADC_INJECTED_LENGTH(LENGTH) (((LENGTH) >= 0x1) && ((LENGTH) <= 0x4))
 
 /**
   * @}
@@ -637,7 +687,7 @@ typedef struct
   * @{
   */
 
-#define IS_ADC_REGULAR_LENGTH(LENGTH) (((LENGTH) >= 0x1) && ((LENGTH) <= 0x10))   
+#define IS_ADC_REGULAR_LENGTH(LENGTH) (((LENGTH) >= 0x1) && ((LENGTH) <= 0x10)) 
 /**
   * @}
   */
@@ -646,7 +696,7 @@ typedef struct
   * @{
   */
 
-#define IS_ADC_REGULAR_DISC_NUMBER(NUMBER) (((NUMBER) >= 0x1) && ((NUMBER) <= 0x8))    
+#define IS_ADC_REGULAR_DISC_NUMBER(NUMBER) (((NUMBER) >= 0x1) && ((NUMBER) <= 0x8))  
 
 /**
   * @}
@@ -655,7 +705,7 @@ typedef struct
 /** @defgroup ADC_two_sampling_delay_number 
   * @{
   */
-#define IS_ADC_TWOSAMPLING_DELAY(DELAY)  (((DELAY) <= 0xF))
+#define IS_ADC_TWOSAMPLING_DELAY(DELAY)	(((DELAY) <= 0xF))
 
 /**
   * @}
@@ -669,28 +719,34 @@ typedef struct
 /* Exported functions ------------------------------------------------------- */ 
 
 /*  Function used to set the ADC configuration to the default reset state *****/
-void ADC_DeInit(ADC_TypeDef* ADCx);  
+void ADC_DeInit(ADC_TypeDef* ADCx);	
 
 /* Initialization and Configuration functions *********************************/
-void ADC_Init(ADC_TypeDef* ADCx, ADC_InitTypeDef* ADC_InitStruct);  
+void ADC_Init(ADC_TypeDef* ADCx, ADC_InitTypeDef* ADC_InitStruct);	
 void ADC_StructInit(ADC_InitTypeDef* ADC_InitStruct); 
+void ADC_InjectedInit(ADC_TypeDef* ADCx, ADC_InjectedInitTypeDef* ADC_InjectedInitStruct); 
+void ADC_InjectedStructInit(ADC_InjectedInitTypeDef* ADC_InjectedInitStruct);
+void ADC_CommonInit(ADC_TypeDef* ADCx, ADC_CommonInitTypeDef* ADC_CommonInitStruct);    
+void ADC_CommonStructInit(ADC_CommonInitTypeDef* ADC_CommonInitStruct);
 
 void ADC_Cmd(ADC_TypeDef* ADCx, FunctionalState NewState); 
 void ADC_StartCalibration(ADC_TypeDef* ADCx); 
+uint32_t ADC_GetCalibrationValue(ADC_TypeDef* ADCx);
+void ADC_SetCalibrationValue(ADC_TypeDef* ADCx, uint32_t ADC_Calibration);
+void ADC_SelectCalibrationMode(ADC_TypeDef* ADCx, uint32_t ADC_CalibrationMode); 
+FlagStatus ADC_GetCalibrationStatus(ADC_TypeDef* ADCx);
 void ADC_DisableCmd(ADC_TypeDef* ADCx); 
 FlagStatus ADC_GetDisableCmdStatus(ADC_TypeDef* ADCx); 
-void ADC_VoltageRegulatorCmd(ADC_TypeDef* ADCx, FunctionalState NewState); 
-void ADC_DeepPowerDownCmd(ADC_TypeDef* ADCx, FunctionalState NewState); 
+void ADC_VoltageRegulatorCmd(ADC_TypeDef* ADCx, FunctionalState NewState);  
 void ADC_SelectDifferentialMode(ADC_TypeDef* ADCx, uint8_t ADC_Channel, FunctionalState NewState);
-void ADC_SelectQueueOfContextMode(ADC_TypeDef* ADCx, FunctionalState NewState);  
-void ADC_AutoPowerOffCmd(ADC_TypeDef* ADCx, FunctionalState NewState); 
+void ADC_SelectQueueOfContextMode(ADC_TypeDef* ADCx, FunctionalState NewState);
 void ADC_AutoDelayCmd(ADC_TypeDef* ADCx, FunctionalState NewState); 
 
 /* Analog Watchdog configuration functions ************************************/
 void ADC_AnalogWatchdogCmd(ADC_TypeDef* ADCx, uint32_t ADC_AnalogWatchdog); 
-void ADC_AnalogWatchdog1ThresholdsConfig(ADC_TypeDef* ADCx, uint16_t HighThreshold, uint16_t LowThreshold);  
-void ADC_AnalogWatchdog2ThresholdsConfig(ADC_TypeDef* ADCx, uint16_t HighThreshold, uint16_t LowThreshold);  
-void ADC_AnalogWatchdog3ThresholdsConfig(ADC_TypeDef* ADCx, uint16_t HighThreshold, uint16_t LowThreshold);  
+void ADC_AnalogWatchdog1ThresholdsConfig(ADC_TypeDef* ADCx, uint16_t HighThreshold, uint16_t LowThreshold);	
+void ADC_AnalogWatchdog2ThresholdsConfig(ADC_TypeDef* ADCx, uint8_t HighThreshold, uint8_t LowThreshold);	
+void ADC_AnalogWatchdog3ThresholdsConfig(ADC_TypeDef* ADCx, uint8_t HighThreshold, uint8_t LowThreshold);	
 void ADC_AnalogWatchdog1SingleChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Channel); 
 void ADC_AnalogWatchdog2SingleChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Channel);   
 void ADC_AnalogWatchdog3SingleChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Channel); 
@@ -700,18 +756,18 @@ void ADC_TempSensorCmd(ADC_TypeDef* ADCx, FunctionalState NewState);
 void ADC_VrefintCmd(ADC_TypeDef* ADCx, FunctionalState NewState); 
 void ADC_VbatCmd(ADC_TypeDef* ADCx, FunctionalState NewState); 
 
-/* Regular Channels Configuration functions ***********************************/
+/* Channels Configuration functions ***********************************/
 void ADC_RegularChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint8_t Rank, uint8_t ADC_SampleTime);
 void ADC_RegularChannelSequencerLengthConfig(ADC_TypeDef* ADCx, uint8_t SequencerLength); 
-void ADC_ExternalTriggerPolarityConfig(ADC_TypeDef* ADCx, uint16_t ADC_ExternalTriggerPolarity); 
-void ADC_SelectExternalTrigger(ADC_TypeDef* ADCx, uint16_t ADC_ExternalTrigger); 
+void ADC_ExternalTriggerConfig(ADC_TypeDef* ADCx, uint16_t ADC_ExternalTrigConvEvent, uint16_t ADC_ExternalTrigEventEdge); 
+ 
 void ADC_StartConversion(ADC_TypeDef* ADCx);
 FlagStatus ADC_GetStartConversionStatus(ADC_TypeDef* ADCx);
 void ADC_StopConversion(ADC_TypeDef* ADCx);
-void ADC_DiscModeChannelCountConfig(ADC_TypeDef* ADCx, uint8_t Number);  
+void ADC_DiscModeChannelCountConfig(ADC_TypeDef* ADCx, uint8_t Number);	
 void ADC_DiscModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState); 
-uint16_t ADC_GetConversionValue(ADC_TypeDef* ADCx);  
-
+uint16_t ADC_GetConversionValue(ADC_TypeDef* ADCx);
+uint32_t ADC_GetDualModeConversionValue(ADC_TypeDef* ADCx);
 
 void ADC_SetChannelOffset1(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint16_t Offset);  
 void ADC_SetChannelOffset2(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint16_t Offset);  
@@ -728,13 +784,7 @@ void ADC_DMACmd(ADC_TypeDef* ADCx, FunctionalState NewState);
 void ADC_DMAConfig(ADC_TypeDef* ADCx, uint32_t ADC_DMAMode);  
 
 /* Injected channels Configuration functions **********************************/
-void ADC_InjecInit(ADC_TypeDef* ADCx, ADC_InjecInitTypeDef* ADC_InjecInitStruct); 
-void ADC_InjectedChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint8_t Rank, uint8_t ADC_SampleTime);
-void ADC_InjectedSequencerLengthConfig(ADC_TypeDef* ADCx, uint8_t SequencerLength); 
-
-void ADC_ExternalTriggerInjectedPolarityConfig(ADC_TypeDef* ADCx, uint16_t ADC_ExternalTriggerInjectedPolarity);
-void ADC_SelectExternalTriggerInjected(ADC_TypeDef* ADCx, uint16_t ADC_ExternalTriggerInjected); 
-
+void ADC_InjectedChannelSampleTimeConfig(ADC_TypeDef* ADCx, uint8_t ADC_InjectedChannel, uint8_t ADC_SampleTime);
 void ADC_StartInjectedConversion(ADC_TypeDef* ADCx); 
 FlagStatus ADC_GetStartInjectedConversionStatus(ADC_TypeDef* ADCx); 
 void ADC_StopInjectedConversion(ADC_TypeDef* ADCx); 
@@ -742,11 +792,7 @@ void ADC_AutoInjectedConvCmd(ADC_TypeDef* ADCx, FunctionalState NewState);
 void ADC_InjectedDiscModeCmd(ADC_TypeDef* ADCx, FunctionalState NewState); 
 uint16_t ADC_GetInjectedConversionValue(ADC_TypeDef* ADCx, uint8_t ADC_InjectedChannel);  
 
-
 /* ADC Dual Modes Configuration functions *************************************/
-void ADC_CommonInit(ADC_TypeDef* ADCx, ADC_CommonInitTypeDef* ADC_CommonInitStruct);    
-void ADC_CommonStructInit(ADC_CommonInitTypeDef* ADC_CommonInitStruct);   
-uint32_t ADC_GetMultiModeConversionValue(ADC_TypeDef* ADCx); 
 FlagStatus ADC_GetCommonFlagStatus(ADC_TypeDef* ADCx, uint32_t ADC_FLAG);
 void ADC_ClearCommonFlag(ADC_TypeDef* ADCx, uint32_t ADC_FLAG); 
 
@@ -755,9 +801,7 @@ void ADC_ITConfig(ADC_TypeDef* ADCx, uint32_t ADC_IT, FunctionalState NewState);
 FlagStatus ADC_GetFlagStatus(ADC_TypeDef* ADCx, uint32_t ADC_FLAG);
 void ADC_ClearFlag(ADC_TypeDef* ADCx, uint32_t ADC_FLAG); 
 ITStatus ADC_GetITStatus(ADC_TypeDef* ADCx, uint32_t ADC_IT);  
-void ADC_ClearITPendingBit(ADC_TypeDef* ADCx, uint32_t ADC_IT);   
-void ADC_SelectCalibrationMode(ADC_TypeDef* ADCx, uint32_t ADC_CalibrationMode); 
-FlagStatus ADC_GetCalibrationStatus(ADC_TypeDef* ADCx);    
+void ADC_ClearITPendingBit(ADC_TypeDef* ADCx, uint32_t ADC_IT);  
 
 #ifdef __cplusplus
 }

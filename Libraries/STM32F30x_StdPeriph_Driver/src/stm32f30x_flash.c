@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f30x_flash.c
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the FLASH peripheral:
   *            + FLASH Interface configuration
@@ -38,7 +38,7 @@
              (++) Program the user option Bytes
              (++) Set/Reset the BOOT1 bit
              (++) Enable/Disable the VDDA Analog Monitoring
-             (++) Enable/Disable the VDD_SD12 Analog Monitoring
+             (++) Enable/Disable the SRAM parity
              (++) Get the user option bytes
              (++) Get the Write protection
              (++) Get the read protection status
@@ -437,12 +437,12 @@ FLASH_Status FLASH_ProgramHalfWord(uint32_t Address, uint16_t Data)
          (+) FLASH_Status FLASH_OB_UserConfig(uint8_t OB_IWDG, uint8_t OB_STOP, uint8_t OB_STDBY);
          (+) FLASH_Status FLASH_OB_BOOTConfig(uint8_t OB_BOOT1);
          (+) FLASH_Status FLASH_OB_VDDAConfig(uint8_t OB_VDDA_ANALOG);
-         (+) FLASH_Status FLASH_OB_VDD_SD12Config(uint8_t OB_VDD_SD12);
-         (+) FLASH_Status FLASH_OB_WriteUser(uint8_t OB_USER);          
+         (+) FLASH_Status FLASH_OB_SRMParityConfig(uint8_t OB_SRAM_Parity);
+         (+) FLASH_Status FLASH_OB_WriteUser(uint8_t OB_USER);					
          (+) FLASH_Status FLASH_OB_Launch(void);
-         (+) uint32_t FLASH_OB_GetUser(void);            
-         (+) uint8_t FLASH_OB_GetWRP(void);            
-         (+) uint8_t FLASH_OB_GetRDP(void);              
+         (+) uint32_t FLASH_OB_GetUser(void);						
+         (+) uint8_t FLASH_OB_GetWRP(void);						
+         (+) uint8_t FLASH_OB_GetRDP(void);							
     [..] Any operation of erase or program should follow these steps:
          (#) Call the FLASH_OB_Unlock() function to enable the FLASH option control 
              register access.
@@ -453,13 +453,13 @@ FLASH_Status FLASH_ProgramHalfWord(uint32_t Address, uint16_t Data)
                   desired read Protection Level.
              (++) FLASH_Status FLASH_OB_UserConfig(uint8_t OB_IWDG, uint8_t OB_STOP, uint8_t OB_STDBY); 
                   => to configure the user Option Bytes.
-            (++) FLASH_Status FLASH_OB_BOOTConfig(uint8_t OB_BOOT1); 
+ 	         (++) FLASH_Status FLASH_OB_BOOTConfig(uint8_t OB_BOOT1); 
                   => to set the boot1 mode
              (++) FLASH_Status FLASH_OB_VDDAConfig(uint8_t OB_VDDA_ANALOG); 
                   => to Enable/Disable the VDDA monotoring.
-             (++) FLASH_Status FLASH_OB_VDD_SD12Config(uint8_t OB_VDD_SD12); 
-                  => to Enable/Disable the VDD_SD12 monotoring.     
-           (++) FLASH_Status FLASH_OB_WriteUser(uint8_t OB_USER); 
+             (++) FLASH_Status FLASH_OB_SRMParityConfig(uint8_t OB_SRAM_Parity); 
+                  => to Enable/Disable the SRAM Parity check.		 
+	         (++) FLASH_Status FLASH_OB_WriteUser(uint8_t OB_USER); 
                   => to write all user option bytes: OB_IWDG, OB_STOP, OB_STDBY, 
                      OB_BOOT1, OB_VDDA_ANALOG and OB_VDD_SD12.  
          (#) Once all needed Option Bytes to be programmed are correctly written, 
@@ -776,7 +776,7 @@ FLASH_Status FLASH_OB_BOOTConfig(uint8_t OB_BOOT1)
     /* Enable the Option Bytes Programming operation */
     FLASH->CR |= FLASH_CR_OPTPG; 
            
-  OB->USER = OB_BOOT1|0xEF;
+	OB->USER = OB_BOOT1|0xEF;
   
     /* Wait for last operation to be completed */
     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
@@ -818,7 +818,7 @@ FLASH_Status FLASH_OB_VDDAConfig(uint8_t OB_VDDA_ANALOG)
     /* Enable the Option Bytes Programming operation */
     FLASH->CR |= FLASH_CR_OPTPG; 
            
-  OB->USER = OB_VDDA_ANALOG |0xDF;
+	OB->USER = OB_VDDA_ANALOG |0xDF;
   
     /* Wait for last operation to be completed */
     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
@@ -835,7 +835,7 @@ FLASH_Status FLASH_OB_VDDAConfig(uint8_t OB_VDDA_ANALOG)
 
 /**
   * @brief  Sets or resets the SRAM partiy.
-  * @param  OB_SRAM_Parity: SSet or Reset the SRAM partiy enable bit.
+  * @param  OB_SRAM_Parity: Set or Reset the SRAM partiy enable bit.
   *         This parameter can be one of the following values:
   *             @arg OB_SRAM_PARITY_SET: Set SRAM partiy.
   *             @arg OB_SRAM_PARITY_RESET: Reset SRAM partiy.
@@ -903,7 +903,7 @@ FLASH_Status FLASH_OB_WriteUser(uint8_t OB_USER)
     /* Enable the Option Bytes Programming operation */
     FLASH->CR |= FLASH_CR_OPTPG; 
            
-  OB->USER = OB_USER | 0x88;
+	  OB->USER = OB_USER | 0x88;
   
     /* Wait for last operation to be completed */
     status = FLASH_WaitForLastOperation(FLASH_ER_PRG_TIMEOUT);
@@ -1022,7 +1022,6 @@ FlagStatus FLASH_OB_GetRDP(void)
   *   This parameter can be any combination of the following values:     
   *     @arg FLASH_IT_EOP: FLASH end of programming Interrupt
   *     @arg FLASH_IT_ERR: FLASH Error Interrupt 
-  *     verify if Early busy is implemented !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   
   * @retval None 
   */
 void FLASH_ITConfig(uint32_t FLASH_IT, FunctionalState NewState)

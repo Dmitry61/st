@@ -2,11 +2,10 @@
   ******************************************************************************
   * @file    stm32f30x_opamp.h
   * @author  MCD Application Team
-  * @version V0.1.0
-  * @date    06-April-2012
+  * @version V1.0.1
+  * @date    23-October-2012
   * @brief   This file contains all the functions prototypes for the operational
-  *          amplifiers (OPAMP) firmware 
-  *          library.
+  *          amplifiers (OPAMP) firmware library.         
   ******************************************************************************
   * @attention
   *
@@ -192,7 +191,7 @@ typedef struct
 #define OPAMP_Vref_50VDDA                    OPAMP_CSR_CALSEL_1     /*!< OPMAP Vref = 50% VDDA  */
 #define OPAMP_Vref_90VDDA                    OPAMP_CSR_CALSEL       /*!< OPMAP Vref = 90% VDDA  */
 
-#define IS_OPAMP_VREF(VREF) (((VREF) == OPAMP_Vref_3VDDA) || \
+#define IS_OPAMP_VREF(VREF) (((VREF) == OPAMP_Vref_3VDDA)  || \
                              ((VREF) == OPAMP_Vref_10VDDA) || \
                              ((VREF) == OPAMP_Vref_50VDDA) || \
                              ((VREF) == OPAMP_Vref_90VDDA))
@@ -202,7 +201,6 @@ typedef struct
   */
 
 /** @defgroup OPAMP_Trimming
-  * @{
   */
 
 #define OPAMP_Trimming_Factory        ((uint32_t)0x00000000) /*!< Factory trimming */
