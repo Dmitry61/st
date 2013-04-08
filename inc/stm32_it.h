@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
-  * @file    usb_pwr.h
+  * @file    stm32_it.h
   * @author  MCD Application Team
   * @version V4.0.0
   * @date    21-January-2013
-  * @brief   Connection/disconnection & power management header
+  * @brief   This file contains the headers of the interrupt handlers.
   ******************************************************************************
   * @attention
   *
@@ -27,46 +27,30 @@
 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __USB_PWR_H
-#define __USB_PWR_H
+#ifndef __STM32_IT_H
+#define __STM32_IT_H
 
 /* Includes ------------------------------------------------------------------*/
+#include "platform_config.h"
+
 /* Exported types ------------------------------------------------------------*/
-typedef enum _RESUME_STATE
-{
-  RESUME_EXTERNAL,
-  RESUME_INTERNAL,
-  RESUME_LATER,
-  RESUME_WAIT,
-  RESUME_START,
-  RESUME_ON,
-  RESUME_OFF,
-  RESUME_ESOF
-} RESUME_STATE;
-
-typedef enum _DEVICE_STATE
-{
-  UNCONNECTED,
-  ATTACHED,
-  POWERED,
-  SUSPENDED,
-  ADDRESSED,
-  CONFIGURED
-} DEVICE_STATE;
-
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
-void Suspend(void);
-void Resume_Init(void);
-void Resume(RESUME_STATE eResumeSetVal);
-RESULT PowerOn(void);
-RESULT PowerOff(void);
 
-/* External variables --------------------------------------------------------*/
-extern  __IO uint32_t bDeviceState; /* USB device status */
-extern __IO bool fSuspendEnabled;  /* true when suspend is possible */
-
-#endif  /*__USB_PWR_H*/
+void NMI_Handler(void);
+void HardFault_Handler(void);
+void MemManage_Handler(void);
+void BusFault_Handler(void);
+void UsageFault_Handler(void);
+void SVC_Handler(void);
+void DebugMon_Handler(void);
+void PendSV_Handler(void);
+void SysTick_Handler(void);
+void USB_LP_CAN1_RX0_IRQHandler(void);
+#ifdef USB_UART
+void USART1_IRQHandler(void);
+#endif
+#endif /* __STM32_IT_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

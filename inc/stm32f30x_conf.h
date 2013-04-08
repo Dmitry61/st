@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f30x_conf.h 
   * @author  MCD Application Team
-  * @version V0.0.2
-  * @date    17-July-2012
+  * @version V4.0.0
+  * @date    21-January-2013
   * @brief   Library configuration file.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.

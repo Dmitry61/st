@@ -73,7 +73,13 @@ typedef enum
 {  
   BUTTON_MODE_GPIO = 0,
   BUTTON_MODE_EXTI = 1
-} ButtonMode_TypeDef;     
+} ButtonMode_TypeDef;
+
+typedef enum 
+{
+  COM1 = 0,
+  COM2 = 1
+} COM_TypeDef;    
 /**
   * @}
   */ 
@@ -141,6 +147,40 @@ typedef enum
   * @}
   */ 
   
+
+#define COMn                             1
+
+/**
+ * @brief Definition for COM port1, connected to USART1
+ */ 
+#define EVAL_COM1                        USART1
+#define EVAL_COM1_CLK                    RCC_APB2Periph_USART1
+
+#define EVAL_COM1_TX_PIN                 GPIO_Pin_4
+#define EVAL_COM1_TX_GPIO_PORT           GPIOC
+#define EVAL_COM1_TX_GPIO_CLK            RCC_AHBPeriph_GPIOC
+#define EVAL_COM1_TX_SOURCE              GPIO_PinSource4
+#define EVAL_COM1_TX_AF                  GPIO_AF_7
+
+#define EVAL_COM1_RX_PIN                 GPIO_Pin_1
+#define EVAL_COM1_RX_GPIO_PORT           GPIOE
+#define EVAL_COM1_RX_GPIO_CLK            RCC_AHBPeriph_GPIOE
+#define EVAL_COM1_RX_SOURCE              GPIO_PinSource1
+#define EVAL_COM1_RX_AF                  GPIO_AF_7
+
+#define EVAL_COM1_CTS_PIN                GPIO_Pin_11
+#define EVAL_COM1_CTS_GPIO_PORT          GPIOA
+#define EVAL_COM1_CTS_GPIO_CLK           RCC_AHBPeriph_GPIOA
+#define EVAL_COM1_CTS_SOURCE             GPIO_PinSource11
+#define EVAL_COM1_CTS_AF                 GPIO_AF_7
+
+#define EVAL_COM1_RTS_PIN                GPIO_Pin_12
+#define EVAL_COM1_RTS_GPIO_PORT          GPIOA
+#define EVAL_COM1_RTS_GPIO_CLK           RCC_AHBPeriph_GPIOA
+#define EVAL_COM1_RTS_SOURCE             GPIO_PinSource12
+#define EVAL_COM1_RTS_AF                 GPIO_AF_7
+   
+#define EVAL_COM1_IRQn                   USART1_IRQn
 /** @defgroup STM32F3_DISCOVERY_LOW_LEVEL_Exported_Macros
   * @{
   */  
@@ -158,6 +198,7 @@ void STM_EVAL_LEDOff(Led_TypeDef Led);
 void STM_EVAL_LEDToggle(Led_TypeDef Led);
 void STM_EVAL_PBInit(Button_TypeDef Button, ButtonMode_TypeDef Button_Mode);
 uint32_t STM_EVAL_PBGetState(Button_TypeDef Button);
+void STM_EVAL_COMInit(COM_TypeDef COM, USART_InitTypeDef* USART_InitStruct);
 /**
   * @}
   */

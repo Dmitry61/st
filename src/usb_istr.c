@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    usb_istr.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    20-September-2012
+  * @version V4.0.0
+  * @date    21-January-2013
   * @brief   ISTR events interrupt service routines
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -25,22 +25,21 @@
   ******************************************************************************
   */
 
+
 /* Includes ------------------------------------------------------------------*/
 #include "usb_lib.h"
 #include "usb_prop.h"
 #include "usb_pwr.h"
 #include "usb_istr.h"
 
-/** @addtogroup STM32F3-Discovery_Demo
-  * @{
-  */
-  
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 __IO uint16_t wIstr;  /* ISTR register last read value */
 __IO uint8_t bIntPackSOF = 0;  /* SOFs received between 2 consecutive packets */
+__IO uint32_t esof_counter =0; /* expected SOF counter */
+__IO uint32_t wCNTR=0;
 
 /* Extern variables ----------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
@@ -68,16 +67,33 @@ void (*pEpInt_OUT[7])(void) =
     EP7_OUT_Callback,
   };
 
-/**
-  * @brief  ISTR events interrupt service routine.
-  * @param  None
-  * @retval None
-  */
+/*******************************************************************************
+* Function Name  : USB_Istr
+* Description    : ISTR events interrupt service routine
+* Input          : None.
+* Output         : None.
+* Return         : None.
+*******************************************************************************/
 void USB_Istr(void)
 {
-
+    uint32_t i=0;
+ __IO uint32_t EP[8];
+  
   wIstr = _GetISTR();
 
+#if (IMR_MSK & ISTR_SOF)
+  if (wIstr & ISTR_SOF & wInterrupt_Mask)
+  {
+    _SetISTR((uint16_t)CLR_SOF);
+    bIntPackSOF++;
+
+#ifdef SOF_CALLBACK
+    SOF_Callback();
+#endif
+  }
+#endif
+  /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/  
+  
 #if (IMR_MSK & ISTR_CTR)
   if (wIstr & ISTR_CTR & wInterrupt_Mask)
   {
@@ -88,8 +104,8 @@ void USB_Istr(void)
     CTR_Callback();
 #endif
   }
-#endif  
-  /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
+#endif
+  /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/  
 #if (IMR_MSK & ISTR_RESET)
   if (wIstr & ISTR_RESET & wInterrupt_Mask)
   {
@@ -154,22 +170,55 @@ void USB_Istr(void)
   }
 #endif
   /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
-#if (IMR_MSK & ISTR_SOF)
-  if (wIstr & ISTR_SOF & wInterrupt_Mask)
-  {
-    _SetISTR((uint16_t)CLR_SOF);
-    bIntPackSOF++;
 
-#ifdef SOF_CALLBACK
-    SOF_Callback();
-#endif
-  }
-#endif
-  /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 #if (IMR_MSK & ISTR_ESOF)
   if (wIstr & ISTR_ESOF & wInterrupt_Mask)
   {
+    /* clear ESOF flag in ISTR */
     _SetISTR((uint16_t)CLR_ESOF);
+    
+    if ((_GetFNR()&FNR_RXDP)!=0)
+    {
+      /* increment ESOF counter */
+      esof_counter ++;
+      
+      /* test if we enter in ESOF more than 3 times with FSUSP =0 and RXDP =1=>> possible missing SUSP flag*/
+      if ((esof_counter >3)&&((_GetCNTR()&CNTR_FSUSP)==0))
+      {           
+        /* this a sequence to apply a force RESET*/
+      
+        /*Store CNTR value */
+        wCNTR = _GetCNTR(); 
+      
+        /*Store endpoints registers status */
+        for (i=0;i<8;i++) EP[i] = _GetENDPOINT(i);
+      
+        /*apply FRES */
+        wCNTR|=CNTR_FRES;
+        _SetCNTR(wCNTR);
+ 
+        /*clear FRES*/
+        wCNTR&=~CNTR_FRES;
+        _SetCNTR(wCNTR);
+      
+        /*poll for RESET flag in ISTR*/
+        while((_GetISTR()&ISTR_RESET) == 0);
+  
+        /* clear RESET flag in ISTR */
+        _SetISTR((uint16_t)CLR_RESET);
+   
+       /*restore Enpoints*/
+        for (i=0;i<8;i++)
+        _SetENDPOINT(i, EP[i]);
+      
+        esof_counter = 0;
+      }
+    }
+    else
+    {
+        esof_counter = 0;
+    }
+    
     /* resume handling timing is made with ESOFs */
     Resume(RESUME_ESOF); /* request without change of the machine state */
 
@@ -180,9 +229,5 @@ void USB_Istr(void)
 #endif
 } /* USB_Istr */
 
-/**
-  * @}
-  */ 
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/ 
-
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

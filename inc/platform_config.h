@@ -1,14 +1,14 @@
 /**
   ******************************************************************************
-  * @file    platform_config.h 
+  * @file    platform_config.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    20-September-2012
+  * @version V4.0.0
+  * @date    21-January-2013
   * @brief   Evaluation board specific configuration file.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -25,39 +25,27 @@
   ******************************************************************************
   */
 
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __PLATFORM_CONFIG_H
 #define __PLATFORM_CONFIG_H
 
 /* Includes ------------------------------------------------------------------*/
+#include "stm32f30x.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 
-#define USB_INT_DEFAULT /* For Default Interrupt Mode */
-//#define USB_INT_REMAP /* For Remapping Interrupt Mode */
+/*Unique Devices IDs register set*/
+#define         ID1          (0x1FFFF7AC)
+#define         ID2          (0x1FFFF7B0)
+#define         ID3          (0x1FFFF7B4)
 
-#if defined (USB_INT_REMAP)
-#warning "You are running Joystick Demo using Remapping Interruption Mode"
-#endif
-
-#if !defined (USB_INT_DEFAULT) && !defined (USB_INT_REMAP)
-  #error "Missing define Please Define Your Interrupt Mode By UnComment Line in platform_config.h File"
-#endif
-
-
-  #define USB_DISCONNECT                      GPIOE  
-  #define USB_DISCONNECT_PIN                  GPIO_Pin_14
-  #define RCC_AHBPeriph_GPIO_DISCONNECT       RCC_AHBPeriph_GPIOE
-                                     
-#define RCC_AHBPeriph_ALLGPIO                 (RCC_AHBPeriph_GPIOA \
-                                              | RCC_AHBPeriph_GPIOB \
-                                              | RCC_AHBPeriph_GPIOC \
-                                              | RCC_AHBPeriph_GPIOD \
-                                              | RCC_AHBPeriph_GPIOE \
-                                              | RCC_AHBPeriph_GPIOF )
-
-
+/* Define the STM32F10x hardware depending on the used evaluation board */
+  #define USB_DISCONNECT                      GPIOB
+  #define USB_DISCONNECT_PIN                  GPIO_Pin_8
+  #define RCC_AHBPeriph_GPIO_DISCONNECT       RCC_AHBPeriph_GPIOB
+ #define EVAL_COM1_IRQHandler              USART1_IRQHandler
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
@@ -65,4 +53,3 @@
 #endif /* __PLATFORM_CONFIG_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-

@@ -1,6 +1,6 @@
 #include "stm32f30x.h"
 #include "stm32f3_discovery.h"
-#include "stm32f30x_it.h"
+#include "stm32_it.h"
 #include "usart.h"
 #include "gyro.h"
 #include "compass.h"

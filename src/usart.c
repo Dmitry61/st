@@ -39,6 +39,7 @@ void USART1_Init(void) {
     NVIC_EnableIRQ(USART1_IRQn);
 }
 
+#ifndef USB_UART
 void USART1_IRQHandler(void) {
     if(USART_GetITStatus(USART1, USART_FLAG_TXE) == RESET) {
         if (USART1_writeidx - USART1_readidx == 0) {
@@ -48,6 +49,7 @@ void USART1_IRQHandler(void) {
         USART_SendData(USART1, USART1_ringbuf[(USART1_readidx++) & (RINGBUF_SIZE-1)]);
     }
 }
+#endif
 
 #define MIN(a, b) ((a)<(b)?(a):(b))
 
