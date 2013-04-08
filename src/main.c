@@ -43,13 +43,11 @@ int main() {
     float headingAvg;
     RingAvg angAvg[3] = {};
     float gyroAvg[3] = {};
-    
-    char debugBuffer[100];
 
-   ringInit(&angAvg[0]);
-   ringInit(&angAvg[1]);
-   ringInit(&angAvg[2]);
-   floatRingInit(&headingRing);
+    ringInit(&angAvg[0]);
+    ringInit(&angAvg[1]);
+    ringInit(&angAvg[2]);
+    floatRingInit(&headingRing);
     while(1) {
         for(int k = 0; k < 10; ++k) {
             /* Read Gyro Angular data */
@@ -59,8 +57,6 @@ int main() {
                 gyroAvg[i] = Gyro_AddAvgAngRate(&angAvg[i], angRates[i]);
             }
             headingAvg = Compass_AddAvgHeading(&headingRing, heading);
-            //sprintf(debugBuffer, "heading %9.3f, average %9.3f\r\n", heading, headingAvg);
-            //USART2_write(debugBuffer);
         }
         printf("c%9.3f\n", headingAvg);
         printf("g%9.3f\n", gyroAvg[2]);
