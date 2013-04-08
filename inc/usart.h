@@ -1,7 +1,9 @@
 #ifndef USART_H
 #define USART_H
 
-#define RINGBUF_SIZE_BITS 7 
+#include "platform_config.h"
+
+#define RINGBUF_SIZE_BITS 7
 
 void USART1_Init(void);
 #ifndef USB_UART
