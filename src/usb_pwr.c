@@ -174,7 +174,6 @@ void Suspend(void)
 	PWR->CR = tmpreg;
 	/* Set SLEEPDEEP bit of Cortex System Control Register */
   SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
-	
 	/* enter system in STOP mode, only when wakeup flag in not set */
 	if((_GetISTR()&ISTR_WKUP)==0)
 	{
@@ -197,6 +196,7 @@ void Suspend(void)
 		
 		/* Reset SLEEPDEEP bit of Cortex System Control Register */
     SCB->SCR &= (uint32_t)~((uint32_t)SCB_SCR_SLEEPDEEP_Msk);
+              
     }
 }
 

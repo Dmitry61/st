@@ -32,7 +32,6 @@
 #include "stm32_it.h"
 #include "usb_lib.h"
 #include "usb_istr.h"
-#include "stm32f3_discovery.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -173,37 +172,12 @@ void USB_LP_CAN1_RX0_IRQHandler(void)
 }
 
 /*******************************************************************************
-* Function Name  : EVAL_COM1_IRQHandler
-* Description    : This function handles EVAL_COM1 global interrupt request.
-* Input          : None
-* Output         : None
-* Return         : None
-*******************************************************************************/
-#ifdef USB_UART
-void EVAL_COM1_IRQHandler(void)
-{
-  if (USART_GetITStatus(EVAL_COM1, USART_IT_RXNE) != RESET)
-  {
-    /* Send the received data to the PC Host*/
-    USART_To_USB_Send_Data();
-  }
-
-  /* If overrun condition occurs, clear the ORE flag and recover communication */
-  if (USART_GetFlagStatus(EVAL_COM1, USART_FLAG_ORE) != RESET)
-  {
-    (void)USART_ReceiveData(EVAL_COM1);
-  }
-}
-#endif
-
-/*******************************************************************************
 * Function Name  : USB_FS_WKUP_IRQHandler
 * Description    : This function handles USB WakeUp interrupt request.
 * Input          : None
 * Output         : None
 * Return         : None
 *******************************************************************************/
-
 void USBWakeUp_IRQHandler(void)
 {
   EXTI_ClearITPendingBit(EXTI_Line18);

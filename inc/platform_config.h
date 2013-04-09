@@ -44,9 +44,8 @@
 /* Define the STM32F10x hardware depending on the used evaluation board */
   #define USB_DISCONNECT                      GPIOB
   #define USB_DISCONNECT_PIN                  GPIO_Pin_8
+
   #define RCC_AHBPeriph_GPIO_DISCONNECT       RCC_AHBPeriph_GPIOB
-  #define EVAL_COM1_IRQHandler              USART1_IRQHandler
-  #define USB_UART
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */

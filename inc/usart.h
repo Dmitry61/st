@@ -6,9 +6,7 @@
 #define RINGBUF_SIZE_BITS 7
 
 void USART1_Init(void);
-#ifndef USB_UART
 void USART1_IRQHandler(void);
-#endif
 void USART1_putc(char ch);
 void USART1_write(const char *str, int len);
 void USART1_print(const char *str);

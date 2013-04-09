@@ -47,10 +47,9 @@ void SVC_Handler(void);
 void DebugMon_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
-void USB_LP_CAN1_RX0_IRQHandler(void);
-#ifdef USB_UART
-void USART1_IRQHandler(void);
-#endif
+void USBWakeUp_IRQHandler(void);
+void USB_FS_WKUP_IRQHandler(void);
+
 #endif /* __STM32_IT_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
