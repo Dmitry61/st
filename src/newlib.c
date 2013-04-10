@@ -27,7 +27,11 @@ int _close (FILEHANDLE fh) {
 
 int _write (FILEHANDLE fh, const uint8_t *buf, uint32_t len, int mode) {
     if ((fh == STDOUT) || (fh == STDERR)) {
+    #ifdef USB_UART
+        USB_UART_write((uint8_t *)buf, len);
+    #else
         USART1_write((const char *) buf, len);
+    #endif
         return len;
     };
     if (fh <= STDERR) return (-1);
@@ -36,7 +40,11 @@ int _write (FILEHANDLE fh, const uint8_t *buf, uint32_t len, int mode) {
 
 int _read (FILEHANDLE fh, uint8_t *buf, uint32_t len, int mode) {
     if (fh == STDIN) {
+    #ifdef USB_UART
+        USB_UART_read((uint8_t *)buf, len);
+    #else
         for (int i = len; i; --i) *buf++ = USART1_getc();
+    #endif
         return len;    
     };
     if (fh <= STDERR) return (-1);

@@ -16,5 +16,7 @@ void USART1_flush(void);
 char USART1_getc(void);
 void USART2_Init(void);
 void USART2_write(char *str);
+void USB_UART_read(uint8_t *buf, int len);
+void USB_UART_write(uint8_t *buf, int len);
 
 #endif

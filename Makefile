@@ -46,11 +46,11 @@ LIBS		= -lm -lc
 # Set Board
 MCU 		= -mthumb -mcpu=cortex-m4
 FPU 		= -mfpu=fpv4-sp-d16 -mfloat-abi=hard
-DEFINES 	= -DSTM32F3XX -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM4
+DEFINES 	= -DSTM32F3XX -DUSE_STDPERIPH_DRIVER -DARM_MATH_CM4 -DUSB_UART
 
 # Set Compilation and Linking Flags
 CFLAGS 		= $(MCU) $(FPU) $(DEFINES) $(INCLUDES) \
-			-g -Wall -std=gnu11 -O0 -ffunction-sections -fdata-sections -fextended-identifiers
+			-g -Wall -std=gnu11 -O3 -ffunction-sections -fdata-sections -fextended-identifiers
 ASFLAGS 	= $(MCU) $(FPU) -g -Wa,--warn -x assembler-with-cpp
 LDFLAGS 	= $(MCU) $(FPU) -g -gdwarf-2\
 			-Tstm32f30_flash.ld \
@@ -60,7 +60,7 @@ LDFLAGS 	= $(MCU) $(FPU) -g -gdwarf-2\
 
 ###################################################
 # Default Target
-all: $(PROJ_NAME).elf info
+all: $(PROJ_NAME).elf $(PROJ_NAME).bin info
 
 # elf Target
 $(PROJ_NAME).elf: $(OBJS)
