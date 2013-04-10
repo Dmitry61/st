@@ -145,18 +145,16 @@ void USART2_write(char *str) {
 
 extern __IO uint32_t bDeviceState;
 extern __IO uint8_t Receive_Buffer[64];
-extern __IO  uint32_t Receive_length;
 __IO uint32_t packet_sent = 1;
 __IO uint32_t packet_receive = 1;
 
 void USB_UART_read(uint8_t *buf, int len) {
     if (bDeviceState == CONFIGURED) {
         CDC_Receive_DATA();
-        while(!Receive_length || !packet_receive);
+        while(!packet_receive);
         for(int i = 0; i < len; ++i)
             *buf++ = Receive_Buffer[i];
     }
-    Receive_length = 0;
 }
 
 void USB_UART_write(uint8_t *buf, int len) {

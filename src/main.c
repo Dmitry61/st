@@ -56,7 +56,6 @@ int main() {
    ringInit(&angAvg[1]);
    ringInit(&angAvg[2]);
    floatRingInit(&headingRing);
-   extern __IO uint32_t packet_sent;
    char device;
     while(1) {
       for(int k = 0; k < 10; ++k) {
