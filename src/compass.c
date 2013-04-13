@@ -214,78 +214,22 @@ float Compass_AddAvgMag(RingAvg *ring, enum MAG mag, int val) {
   return Compass_AvgMag(ring, mag);
 }
 
-float Compass_GetHeading() {
-    float fNormAcc,fSinRoll,fCosRoll,fSinPitch,fCosPitch, RollAng, PitchAng;
-    float fTiltedX,fTiltedY;
-
-    int acc[3];
+vector Compass_GetHeadingVector() {
     int mag[3];
 
-    Compass_ReadAcc(acc);
     Compass_ReadMag(mag);
-    mag[0] /= LSM303DLHC_M_SENSITIVITY_XY_8_1Ga;
-    mag[1] /= LSM303DLHC_M_SENSITIVITY_XY_8_1Ga;
-    mag[2] /= LSM303DLHC_M_SENSITIVITY_Z_8_1Ga;
 
-    acc[0] /= LSM_Acc_Sensitivity_2g;
-    acc[1] /= LSM_Acc_Sensitivity_2g;
-    acc[2] /= LSM_Acc_Sensitivity_2g;
-
-    for(int i=0;i<3;i++)
-        acc[i] /= 100.0f;
-    fNormAcc = sqrt(sqr(acc[0])+sqr(acc[1])+sqr(acc[2]));
-
-    fSinRoll = -acc[1]/fNormAcc;
-    fCosRoll = sqrt(1.0-sqr(fSinRoll));
-    fSinPitch = acc[0]/fNormAcc;
-    fCosPitch = sqrt(1.0-sqr(fSinPitch));
-    if ( fSinRoll >0) {
-        if (fCosRoll>0) {
-            RollAng = acos(fCosRoll)*180/PI;
-        } else {
-            RollAng = acos(fCosRoll)*180/PI + 180;
-        }
-    } else {
-        if (fCosRoll>0) {
-            RollAng = acos(fCosRoll)*180/PI + 360;
-        } else {
-            RollAng = acos(fCosRoll)*180/PI + 180;
-        }
-    }
-
-    if ( fSinPitch >0) {
-        if (fCosPitch>0) {
-            PitchAng = acos(fCosPitch)*180/PI;
-        } else {
-            PitchAng = acos(fCosPitch)*180/PI + 180;
-        }
-    } else {
-        if (fCosPitch>0) {
-            PitchAng = acos(fCosPitch)*180/PI + 360;
-        } else {
-            PitchAng = acos(fCosPitch)*180/PI + 180;
-        }
-    }
-
-    if (RollAng >=360) {
-        RollAng = RollAng - 360;
-    }
-
-    if (PitchAng >=360) {
-        PitchAng = PitchAng - 360;
-    }
-
-    fTiltedX = mag[0]*fCosPitch+mag[2]*fSinPitch;
-    fTiltedY = mag[0]*fSinRoll*fSinPitch+mag[1]*fCosRoll-mag[1]*fSinRoll*fCosPitch;
-    float heading = atan2f((float)fTiltedY,(float)fTiltedX)*180/PI;
+    vector heading;
+    heading.x = mag[0] / LSM303DLHC_M_SENSITIVITY_XY_8_1Ga;
+    heading.y = mag[1] / LSM303DLHC_M_SENSITIVITY_XY_8_1Ga;
     return heading;
 }
 
-float Compass_AvgHeading(FloatRingAvg *ring) {
-  return ring->sum / BUF_SIZE;
+float Compass_AvgHeading(VectorRingAvg *ring) {
+  return vectorAngle(ring->sum);
 }
 
-float Compass_AddAvgHeading(FloatRingAvg *ring, float val) {
-  floatRingAdd(ring, val);
+float Compass_AddAvgHeading(VectorRingAvg *ring, vector val) {
+  vectorRingAdd(ring, val);
   return Compass_AvgHeading(ring);
 }

@@ -1,4 +1,5 @@
 obj
 pdf
 *.elf
+*.bin
 *.map

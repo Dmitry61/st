@@ -3,6 +3,10 @@
 
 #define BUF_SIZE 50
 #define sqr(x) (x*x)
+typedef struct {
+	int x;
+	int y;
+} vector;
 
 typedef struct {
     int data[BUF_SIZE];
@@ -14,13 +18,14 @@ typedef struct {
 void ringAdd(RingAvg *ring, int val);
 
 typedef struct  {
-	float data[BUF_SIZE];
-	float sum;
+	vector data[BUF_SIZE];
+	vector sum;
 	int idx;
 	int consecutiveFaults;
-} FloatRingAvg;
+} VectorRingAvg;
 void ringInit(RingAvg *ring);
-void floatRingInit(FloatRingAvg *ring);
-void floatRingAdd(FloatRingAvg *ring, float val);
+void vectorRingInit(VectorRingAvg *ring);
+void vectorRingAdd(VectorRingAvg *ring, vector val);
+float vectorAngle(vector vec);
 
 #endif

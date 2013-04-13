@@ -29,7 +29,7 @@ int main() {
     setvbuf(stdin, NULL, _IONBF, 0);
     setvbuf(stdout, NULL, _IONBF, 0);
     setvbuf(stderr, NULL, _IONBF, 0);
-    FloatRingAvg headingRing;
+    VectorRingAvg headingRing;
     headingRing.consecutiveFaults = 0;
 
     USART2_Init();
@@ -39,7 +39,7 @@ int main() {
     Compass_Init();
 
     int angRates[3];
-    float heading;
+    vector heading;
     float headingAvg;
     RingAvg angAvg[3] = {};
     float gyroAvg[3] = {};
@@ -49,12 +49,12 @@ int main() {
    ringInit(&angAvg[0]);
    ringInit(&angAvg[1]);
    ringInit(&angAvg[2]);
-   floatRingInit(&headingRing);
+   vectorRingInit(&headingRing);
     while(1) {
         for(int k = 0; k < 10; ++k) {
             /* Read Gyro Angular data */
             Gyro_ReadAngRate(angRates);
-            heading = Compass_GetHeading();
+            heading = Compass_GetHeadingVector();
             for(int i=0; i<3; ++i) {
                 gyroAvg[i] = Gyro_AddAvgAngRate(&angAvg[i], angRates[i]);
             }
